@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Directories that FileProvider is allowed to share. Nothing else in app storage is exposed. -->
+<paths>
+    <!-- Permanent post attachments: filesDir/images -->
+    <files-path name="post_images" path="images/" />
+    <!-- Temporary camera captures before they are processed: cacheDir/camera -->
+    <cache-path name="camera_captures" path="camera/" />
+</paths>

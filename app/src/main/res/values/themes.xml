@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- One DayNight theme; colours switch automatically via values-night/colors.xml. -->
+    <style name="Theme.BlogSpace" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/bs_primary</item>
+        <item name="colorOnPrimary">@color/bs_on_primary</item>
+        <item name="colorPrimaryContainer">@color/bs_primary_container</item>
+        <item name="colorOnPrimaryContainer">@color/bs_on_primary_container</item>
+        <item name="colorSecondary">@color/bs_secondary</item>
+        <item name="colorOnSecondary">@color/bs_on_secondary</item>
+        <item name="colorSecondaryContainer">@color/bs_secondary_container</item>
+        <item name="colorOnSecondaryContainer">@color/bs_on_secondary_container</item>
+        <item name="colorTertiary">@color/bs_tertiary</item>
+        <item name="colorOnTertiary">@color/bs_on_tertiary</item>
+        <item name="colorTertiaryContainer">@color/bs_tertiary_container</item>
+        <item name="colorOnTertiaryContainer">@color/bs_on_tertiary_container</item>
+        <item name="colorError">@color/bs_error</item>
+        <item name="colorOnError">@color/bs_on_error</item>
+        <item name="colorErrorContainer">@color/bs_error_container</item>
+        <item name="colorOnErrorContainer">@color/bs_on_error_container</item>
+        <item name="android:colorBackground">@color/bs_background</item>
+        <item name="colorOnBackground">@color/bs_on_surface</item>
+        <item name="colorSurface">@color/bs_surface</item>
+        <item name="colorOnSurface">@color/bs_on_surface</item>
+        <item name="colorSurfaceVariant">@color/bs_surface_variant</item>
+        <item name="colorOnSurfaceVariant">@color/bs_on_surface_variant</item>
+        <item name="colorSurfaceContainerLowest">@color/bs_surface_container_lowest</item>
+        <item name="colorSurfaceContainerLow">@color/bs_surface_container_low</item>
+        <item name="colorSurfaceContainer">@color/bs_surface_container</item>
+        <item name="colorSurfaceContainerHigh">@color/bs_surface_container_high</item>
+        <item name="colorSurfaceContainerHighest">@color/bs_surface_container_highest</item>
+        <item name="colorOutline">@color/bs_outline</item>
+        <item name="colorOutlineVariant">@color/bs_outline_variant</item>
+        <!-- Contextual action bar (multi-select) draws over the toolbar instead of pushing it down. -->
+        <item name="windowActionModeOverlay">true</item>
+        <item name="actionModeBackground">@color/bs_primary_container</item>
+        <item name="materialCardViewStyle">@style/Widget.BlogSpace.Card</item>
+    </style>
+
+    <style name="Widget.BlogSpace.Card" parent="Widget.Material3.CardView.Filled">
+        <item name="cardBackgroundColor">@color/bs_surface_container_lowest</item>
+        <item name="cardCornerRadius">@dimen/card_radius</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="strokeColor">@color/bs_outline_variant</item>
+    </style>
+
+    <style name="Widget.BlogSpace.Toolbar" parent="Widget.Material3.Toolbar.Surface">
+        <item name="titleTextAppearance">@style/TextAppearance.BlogSpace.ToolbarTitle</item>
+    </style>
+
+    <style name="TextAppearance.BlogSpace.ToolbarTitle" parent="TextAppearance.Material3.TitleLarge">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.BlogSpace.SectionHeader" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="TextAppearance.BlogSpace.Stat" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">?attr/colorPrimary</item>
+    </style>
+</resources>

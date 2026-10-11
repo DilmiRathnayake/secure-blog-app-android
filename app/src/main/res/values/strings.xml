@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Change this single value to rename the app. -->
+    <string name="app_name">BlogSpace</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_posts">Posts</string>
+    <string name="nav_search">Search</string>
+    <string name="nav_publish">Publish</string>
+    <string name="nav_about">About</string>
+
+    <!-- Common actions -->
+    <string name="action_new_post">New post</string>
+    <string name="action_write_post">Write a new post</string>
+    <string name="action_save">Save</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_share">Share</string>
+    <string name="action_publish">Publish</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_discard">Discard</string>
+    <string name="action_keep_editing">Keep editing</string>
+    <string name="action_ok">OK</string>
+    <string name="action_select">Select</string>
+    <string name="action_select_all">Select all</string>
+    <string name="action_clear_selection">Clear selection</string>
+    <string name="action_view_all">View all</string>
+    <string name="action_open_settings">Open publishing settings</string>
+    <string name="action_back">Back</string>
+
+    <!-- Home -->
+    <string name="home_greeting">Your blog, on your device</string>
+    <string name="home_subtitle">Write, organise and share posts — even with no internet connection.</string>
+    <string name="stat_total">Posts</string>
+    <string name="stat_with_images">With photos</string>
+    <string name="stat_published">Published</string>
+    <string name="home_recent">Recent posts</string>
+    <string name="status_offline">You are offline. Writing, editing, searching and deleting still work — posts are saved on this device.</string>
+    <string name="status_online">Online. Posts are always saved on this device first.</string>
+
+    <!-- Post list -->
+    <string name="posts_empty_title">No posts yet</string>
+    <string name="posts_empty_body">Tap “New post” to write your first blog post. It is saved on this device and works offline.</string>
+    <plurals name="selected_count">
+        <item quantity="one">%d selected</item>
+        <item quantity="other">%d selected</item>
+    </plurals>
+    <string name="label_published">Published</string>
+    <string name="cd_post_thumbnail">Photo attached to the post</string>
+    <string name="cd_select_post">Select post %1$s</string>
+    <string name="updated_relative">Updated %1$s</string>
+
+    <!-- Delete -->
+    <string name="delete_one_title">Delete this post?</string>
+    <string name="delete_one_message">“%1$s” and its photo will be permanently removed from this device. This cannot be undone.</string>
+    <plurals name="delete_many_title">
+        <item quantity="one">Delete %d post?</item>
+        <item quantity="other">Delete %d posts?</item>
+    </plurals>
+    <string name="delete_many_message">The selected posts and their photos will be permanently removed from this device. This cannot be undone.</string>
+    <string name="deleted_one">Post deleted</string>
+    <plurals name="deleted_many">
+        <item quantity="one">%d post deleted</item>
+        <item quantity="other">%d posts deleted</item>
+    </plurals>
+    <string name="error_delete">Could not delete. Please try again.</string>
+    <string name="nothing_selected">Select at least one post first</string>
+
+    <!-- Search -->
+    <string name="search_hint">Search titles and content</string>
+    <string name="search_prompt_title">Find a post</string>
+    <string name="search_prompt_body">Type any word or part of a word. Search ignores upper/lower case and looks in both titles and post text.</string>
+    <string name="search_no_results_title">No matching posts</string>
+    <string name="search_no_results_body">Nothing contains “%1$s”. Check the spelling or try a shorter word.</string>
+    <plurals name="search_result_count">
+        <item quantity="one">%1$d post matches “%2$s”</item>
+        <item quantity="other">%1$d posts match “%2$s”</item>
+    </plurals>
+
+    <!-- Editor -->
+    <string name="title_new_post">New post</string>
+    <string name="title_edit_post">Edit post</string>
+    <string name="hint_title">Title</string>
+    <string name="hint_content">Write your post…</string>
+    <string name="label_photo">Photo</string>
+    <string name="photo_none">No photo attached. Add one from your gallery or take a new one.</string>
+    <string name="action_gallery">Gallery</string>
+    <string name="action_camera">Camera</string>
+    <string name="action_remove_photo">Remove photo</string>
+    <string name="cd_photo_preview">Preview of the attached photo</string>
+    <string name="error_title_required">Please enter a title</string>
+    <string name="error_content_required">Please write something in your post</string>
+    <string name="error_title_too_long">Title must be %1$d characters or fewer</string>
+    <string name="error_content_too_long">Post must be %1$d characters or fewer</string>
+    <string name="saved_new">Post saved on this device</string>
+    <string name="saved_update">Changes saved</string>
+    <string name="error_save">Could not save the post. Please try again.</string>
+    <string name="error_post_missing">This post no longer exists.</string>
+    <string name="discard_title">Discard changes?</string>
+    <string name="discard_message">Your unsaved changes will be lost.</string>
+    <string name="photo_processing">Processing photo…</string>
+    <string name="photo_attached">Photo attached</string>
+    <string name="photo_removed">Photo will be removed when you save</string>
+    <string name="photo_pick_cancelled">No photo selected</string>
+    <string name="photo_capture_cancelled">No photo was taken</string>
+    <string name="error_photo_import">That image could not be opened. Try a JPEG, PNG or WebP photo.</string>
+    <string name="error_no_camera">No camera app is available on this device</string>
+    <string name="error_camera_file">Could not prepare storage for the photo</string>
+    <string name="photo_missing">The photo file for this post is missing.</string>
+
+    <!-- Detail -->
+    <string name="created_on">Created %1$s</string>
+    <string name="updated_on">Last edited %1$s</string>
+    <string name="published_on">Published to Blogger on %1$s</string>
+    <string name="action_view_online">View online</string>
+
+    <!-- Share -->
+    <string name="share_choose_title">Share post</string>
+    <string name="share_any_app">Share with any app</string>
+    <string name="share_email">Send by email</string>
+    <string name="share_chooser_title">Share “%1$s” via</string>
+    <string name="share_footer">Shared from %1$s</string>
+    <string name="error_no_share_app">No app on this device can share this post</string>
+    <string name="error_no_email_app">No email app found — showing all sharing options instead</string>
+    <string name="share_image_missing">The photo is missing, so only the text will be shared</string>
+
+    <!-- Publishing -->
+    <string name="publish_title">Online publishing</string>
+    <string name="publish_intro">Publish posts to your own Blogger blog (blogger.com). Posts are uploaded only when you choose Publish, and are marked “Published” only after Blogger confirms it.</string>
+    <string name="publish_mode_label">Publishing destination</string>
+    <string name="publish_mode_blogger">Blogger — real publishing to your blog</string>
+    <string name="publish_mode_test">Test mode — simulated, nothing is uploaded</string>
+    <string name="blogger_section">Blogger account</string>
+    <string name="blogger_not_connected">Not connected. Connect a Google account that owns a Blogger blog.</string>
+    <string name="blogger_connected">Publishing to: %1$s</string>
+    <string name="blogger_connect">Connect Google account &amp; choose blog</string>
+    <string name="blogger_change_blog">Change blog</string>
+    <string name="blogger_disconnect">Disconnect</string>
+    <string name="blogger_disconnected">Disconnected from Blogger</string>
+    <string name="blogger_include_images">Include the post photo (embedded, reduced size)</string>
+    <string name="blogger_choose_blog">Choose a blog</string>
+    <string name="blogger_no_blogs">This Google account has no Blogger blogs. Create one at blogger.com, then try again.</string>
+    <string name="blogger_setup_help">Setup (one time): enable the Blogger API in Google Cloud, create an Android OAuth client for package com.blogspace.app with your debug SHA-1, and add your Google account as a test user. Full steps are in docs/PUBLISHING_SETUP.md.</string>
+    <string name="test_section">Test mode</string>
+    <string name="test_mode_help">Test mode lets you rehearse the publishing flow without an account. Results are clearly labelled “Simulated” and posts are never marked as published.</string>
+    <string name="test_simulate_failure">Simulate an upload failure</string>
+    <plurals name="publish_confirm_title">
+        <item quantity="one">Publish %d post?</item>
+        <item quantity="other">Publish %d posts?</item>
+    </plurals>
+    <string name="publish_confirm_blogger">They will be published publicly to “%1$s” on Blogger.</string>
+    <string name="publish_confirm_test">Test mode is on: the upload will be simulated and nothing will be sent online.</string>
+    <string name="publish_progress">Publishing %1$d of %2$d…</string>
+    <string name="publish_progress_title">Publishing</string>
+    <string name="publish_result_title">Publishing results</string>
+    <string name="publish_result_test_title">Test mode results (simulated)</string>
+    <string name="publish_result_ok">✓ %1$s\n   %2$s</string>
+    <string name="publish_result_ok_no_url">✓ %1$s</string>
+    <string name="publish_result_simulated">✓ %1$s — simulated only, not uploaded</string>
+    <string name="publish_result_fail">✗ %1$s\n   %2$s</string>
+    <string name="publish_result_image_omitted">   (Blogger rejected the embedded photo, so it was published without it.)</string>
+    <string name="publish_need_setup_title">Publishing is not set up</string>
+    <string name="publish_need_setup_body">Connect your Google account and choose a Blogger blog first, or switch to Test mode.</string>
+    <string name="publish_offline_title">No internet connection</string>
+    <string name="publish_offline_body">Publishing needs the internet. Your posts are safe on this device — try again when you are online.</string>
+    <string name="publish_signin_cancelled">Google sign-in was cancelled</string>
+    <string name="publish_auth_failed">Google sign-in failed: %1$s</string>
+
+    <string name="err_network">Network problem — check your connection and try again.</string>
+    <string name="err_auth">Google authorisation expired or was refused. Reconnect in the Publish tab.</string>
+    <string name="err_forbidden">Blogger refused the request: %1$s</string>
+    <string name="err_rate_limit">Blogger says too many requests were sent. Wait a few minutes and try again.</string>
+    <string name="err_rejected">Blogger rejected the post: %1$s</string>
+    <string name="err_server">Blogger had a problem (HTTP %1$d). Try again later.</string>
+    <string name="err_not_found">The selected blog was not found. Choose your blog again in the Publish tab.</string>
+    <string name="err_simulated">Simulated failure (test mode). Nothing was uploaded.</string>
+    <string name="err_unknown">Unexpected error: %1$s</string>
+
+    <!-- About -->
+    <string name="about_title">About %1$s</string>
+    <string name="about_version">Version %1$s</string>
+    <string name="about_body">BlogSpace is an offline-first blogging app. Every post is stored in an SQLite database on this device, so you can write, edit, search and delete posts without an internet connection.</string>
+    <string name="about_features_title">What you can do</string>
+    <string name="about_features">• Create, edit, view and delete posts offline\n• Attach a photo from the gallery or camera\n• Search titles and text (partial, case-insensitive)\n• Select several posts to delete or publish together\n• Share a post (text and photo) with email or any app\n• Publish one or many posts to your Blogger blog</string>
+    <string name="about_howto_title">Tips</string>
+    <string name="about_howto">• Long-press a post in the Posts tab to start selecting.\n• Use “Select all” or “Clear selection” from the selection bar.\n• Open a post and tap Share to email it with its photo.\n• Set up publishing once in the Publish tab.</string>
+    <string name="about_privacy_title">Privacy &amp; security</string>
+    <string name="about_privacy">Posts and photos stay in the app’s private storage. Nothing is uploaded unless you choose Publish. Google sign-in is handled by Google Play services; the app never sees your password and stores no passwords or tokens.</string>
+    <string name="about_libraries_title">Third-party libraries</string>
+    <string name="about_libraries">AndroidX (AppCompat, Activity, Core, RecyclerView, ConstraintLayout, ExifInterface) — Apache 2.0\nMaterial Components for Android — Apache 2.0\nGoogle Play services Auth — Google APIs terms\nIcons: Material Design Icons — Apache 2.0</string>
+</resources>

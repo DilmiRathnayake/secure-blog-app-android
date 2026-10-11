@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="space_xs">4dp</dimen>
+    <dimen name="space_s">8dp</dimen>
+    <dimen name="space_m">12dp</dimen>
+    <dimen name="space_l">16dp</dimen>
+    <dimen name="space_xl">24dp</dimen>
+    <dimen name="space_xxl">32dp</dimen>
+    <dimen name="screen_padding">16dp</dimen>
+    <dimen name="card_radius">16dp</dimen>
+    <dimen name="thumb_size">72dp</dimen>
+    <dimen name="preview_height">220dp</dimen>
+    <dimen name="detail_image_max_height">360dp</dimen>
+    <dimen name="empty_icon_size">72dp</dimen>
+    <dimen name="fab_bottom_space">88dp</dimen>
+    <!-- Keeps text columns readable on tablets / landscape. -->
+    <dimen name="content_max_width">720dp</dimen>
+    <dimen name="default_stroke">1dp</dimen>
+    <dimen name="selected_stroke">2dp</dimen>
+</resources>

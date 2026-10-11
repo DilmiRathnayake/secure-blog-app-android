@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Light palette. values-night/colors.xml redefines the same names for dark mode. -->
+<resources>
+    <color name="bs_primary">#4F46E5</color>
+    <color name="bs_on_primary">#FFFFFF</color>
+    <color name="bs_primary_container">#E0E0FF</color>
+    <color name="bs_on_primary_container">#14105E</color>
+    <color name="bs_secondary">#0F766E</color>
+    <color name="bs_on_secondary">#FFFFFF</color>
+    <color name="bs_secondary_container">#CCF2EC</color>
+    <color name="bs_on_secondary_container">#00201C</color>
+    <color name="bs_tertiary">#B45309</color>
+    <color name="bs_on_tertiary">#FFFFFF</color>
+    <color name="bs_tertiary_container">#FFE4C7</color>
+    <color name="bs_on_tertiary_container">#2E1500</color>
+    <color name="bs_error">#BA1A1A</color>
+    <color name="bs_on_error">#FFFFFF</color>
+    <color name="bs_error_container">#FFDAD6</color>
+    <color name="bs_on_error_container">#410002</color>
+    <color name="bs_background">#F7F7FB</color>
+    <color name="bs_surface">#F7F7FB</color>
+    <color name="bs_on_surface">#1B1B21</color>
+    <color name="bs_surface_variant">#E3E1EC</color>
+    <color name="bs_on_surface_variant">#46464F</color>
+    <color name="bs_surface_container_lowest">#FFFFFF</color>
+    <color name="bs_surface_container_low">#F1F0F7</color>
+    <color name="bs_surface_container">#EBEAF2</color>
+    <color name="bs_surface_container_high">#E5E4EC</color>
+    <color name="bs_surface_container_highest">#DFDEE6</color>
+    <color name="bs_outline">#777680</color>
+    <color name="bs_outline_variant">#C7C5D0</color>
+    <color name="bs_highlight">#FFE08A</color>
+    <color name="bs_success">#1B7A3E</color>
+    <color name="bs_launcher_background">#4F46E5</color>
+</resources>
