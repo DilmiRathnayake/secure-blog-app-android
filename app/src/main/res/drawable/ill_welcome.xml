@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generated illustration: layered shapes around a Material icon. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="200dp" android:height="200dp"
+    android:viewportWidth="200" android:viewportHeight="200">
+    <!-- soft background blob -->
+    <path android:fillColor="@color/bs_primary_container" android:fillAlpha="0.7"
+        android:pathData="M100,18C146,18 182,50 182,96C182,146 148,184 98,184C50,184 18,150 18,102C18,54 54,18 100,18Z" />
+    <!-- floating dots -->
+    <path android:fillColor="@color/brand_purple" android:fillAlpha="0.35" android:pathData="M30,52m-7,0a7,7 0,1 1,14 0a7,7 0,1 1,-14 0" />
+    <path android:fillColor="@color/brand_indigo" android:fillAlpha="0.3" android:pathData="M172,150m-9,0a9,9 0,1 1,18 0a9,9 0,1 1,-18 0" />
+    <path android:fillColor="@color/brand_purple" android:fillAlpha="0.5" android:pathData="M160,40m-4,0a4,4 0,1 1,8 0a4,4 0,1 1,-8 0" />
+    <!-- back card -->
+    <path android:fillColor="@color/bs_surface_container_lowest" android:fillAlpha="0.6"
+        android:pathData="M66,58h84a14,14 0,0 1,14 14v62a14,14 0,0 1,-14 14h-84a14,14 0,0 1,-14 -14v-62a14,14 0,0 1,14 -14z" />
+    <!-- front gradient card -->
+    <path android:pathData="M50,70h84a16,16 0,0 1,16 16v58a16,16 0,0 1,-16 16h-84a16,16 0,0 1,-16 -16v-58a16,16 0,0 1,16 -16z">
+        <aapt:attr name="android:fillColor">
+            <gradient android:type="linear" android:startX="34" android:startY="70" android:endX="150" android:endY="160">
+                <item android:offset="0" android:color="@color/brand_indigo" />
+                <item android:offset="1" android:color="@color/brand_purple" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <!-- icon (24x24 scaled x2.6, centred on the card) -->
+    <group android:translateX="61" android:translateY="84" android:scaleX="2.6" android:scaleY="2.6">
+        <path android:fillColor="#FFFFFF" android:pathData="M11.5,9.5L9,4 6.5,9.5 1,12l5.5,2.5L9,20l2.5,-5.5L17,12l-5.5,-2.5zM19,9l1.25,-2.75L23,5l-2.75,-1.25L19,1l-1.25,2.75L15,5l2.75,1.25L19,9z" />
+    </group>
+    <!-- sparkle -->
+    <group android:translateX="146" android:translateY="54" android:scaleX="1.1" android:scaleY="1.1">
+        <path android:fillColor="#FBBF24" android:pathData="M12,0L14.5,9.5L24,12L14.5,14.5L12,24L9.5,14.5L0,12L9.5,9.5Z" />
+    </group>
+</vector>

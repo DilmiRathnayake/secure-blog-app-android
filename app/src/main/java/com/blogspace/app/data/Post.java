@@ -35,6 +35,8 @@ public class Post {
     private String remoteUrl;
     /** Time of the last confirmed publish, or 0 if never published. */
     private long publishedAt;
+    /** A draft is saved on the device but not finished; drafts are never published. */
+    private boolean draft;
 
     public Post() {
     }
@@ -130,6 +132,25 @@ public class Post {
         return publishedAt > 0;
     }
 
+    public boolean isDraft() {
+        return draft;
+    }
+
+    public void setDraft(boolean draft) {
+        this.draft = draft;
+    }
+
+    /** Status badge shown in lists: Draft, Uploaded or Offline (saved only on the device). */
+    @NonNull
+    public Status getStatus() {
+        if (draft) {
+            return Status.DRAFT;
+        }
+        return isPublished() ? Status.UPLOADED : Status.OFFLINE;
+    }
+
+    public enum Status { DRAFT, OFFLINE, UPLOADED }
+
     /** Used by the RecyclerView DiffUtil to decide whether a row must be redrawn. */
     public boolean hasSameContentAs(@NonNull Post other) {
         return id == other.id
@@ -137,6 +158,7 @@ public class Post {
                 && content.equals(other.content)
                 && Objects.equals(imageFileName, other.imageFileName)
                 && updatedAt == other.updatedAt
-                && publishedAt == other.publishedAt;
+                && publishedAt == other.publishedAt
+                && draft == other.draft;
     }
 }

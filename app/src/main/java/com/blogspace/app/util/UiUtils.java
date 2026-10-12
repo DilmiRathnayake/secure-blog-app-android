@@ -48,6 +48,41 @@ public final class UiUtils {
         });
     }
 
+    /**
+     * Adds the status-bar height to the top padding of a header that is drawn edge-to-edge
+     * (e.g. a gradient hero), so its content is not hidden under the status bar.
+     */
+    public static void applyStatusBarPadding(@NonNull View header) {
+        final int top = header.getPaddingTop();
+        ViewCompat.setOnApplyWindowInsetsListener(header, (v, insets) -> {
+            Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
+            v.setPadding(v.getPaddingLeft(), top + bars.top, v.getPaddingRight(), v.getPaddingBottom());
+            return insets;
+        });
+        ViewCompat.requestApplyInsets(header);
+    }
+
+    /** Pads only the bottom of {@code view} by the navigation bar / keyboard height. */
+    public static void applyBottomInsets(@NonNull View view) {
+        final int bottom = view.getPaddingBottom();
+        ViewCompat.setOnApplyWindowInsetsListener(view, (v, insets) -> {
+            Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            Insets ime = insets.getInsets(WindowInsetsCompat.Type.ime());
+            v.setPadding(v.getPaddingLeft(), v.getPaddingTop(), v.getPaddingRight(), bottom + Math.max(bars.bottom, ime.bottom));
+            return insets;
+        });
+    }
+
+    /** Time-of-day greeting, e.g. "Good morning,". */
+    @NonNull
+    public static String greeting(@NonNull Context context) {
+        int hour = java.util.Calendar.getInstance().get(java.util.Calendar.HOUR_OF_DAY);
+        if (hour < 12) {
+            return context.getString(R.string.greeting_morning);
+        }
+        return context.getString(hour < 18 ? R.string.greeting_afternoon : R.string.greeting_evening);
+    }
+
     /** True when the device currently has a validated internet connection. */
     public static boolean isOnline(@NonNull Context context) {
         ConnectivityManager cm = ContextCompat.getSystemService(context, ConnectivityManager.class);

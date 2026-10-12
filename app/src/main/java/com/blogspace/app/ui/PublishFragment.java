@@ -29,6 +29,12 @@ import java.util.List;
  */
 public class PublishFragment extends Fragment {
 
+    /** Implemented by the hosting Activity, which owns the Google consent-screen launcher. */
+    public interface AuthHost {
+        @NonNull
+        GoogleAuthHelper getAuthHelper();
+    }
+
     private FragmentPublishBinding binding;
     private PublishSettings settings;
 
@@ -94,8 +100,8 @@ public class PublishFragment extends Fragment {
                     .show();
             return;
         }
-        MainActivity activity = (MainActivity) requireActivity();
-        GoogleAuthHelper auth = activity.getPublishController().getAuthHelper();
+        androidx.fragment.app.FragmentActivity activity = requireActivity();
+        GoogleAuthHelper auth = ((AuthHost) activity).getAuthHelper();
         setBusy(true);
         auth.requestToken(activity, new GoogleAuthHelper.Callback() {
             @Override

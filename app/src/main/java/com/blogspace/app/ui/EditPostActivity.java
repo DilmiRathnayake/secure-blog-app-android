@@ -20,6 +20,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.blogspace.app.R;
 import com.blogspace.app.data.Post;
@@ -39,7 +40,8 @@ import java.util.Objects;
 
 /**
  * Creates a new post or edits an existing one (same screen; editing keeps the same post id, so no
- * duplicate row is created).
+ * duplicate row is created). Posts can be saved as a finished post ("Save offline") or as a
+ * Draft. The menu also offers "Save &amp; publish online" and "Save &amp; share".
  * <p>
  * Photo handling:
  * <ul>
@@ -61,10 +63,12 @@ public class EditPostActivity extends AppCompatActivity {
     private static final String STATE_INITIAL_TITLE = "initial_title";
     private static final String STATE_INITIAL_CONTENT = "initial_content";
     private static final String STATE_CREATED_AT = "created_at";
+    private static final String STATE_WAS_DRAFT = "was_draft";
 
     private ActivityEditPostBinding binding;
     private long postId = Post.NO_ID;
     private long createdAt;
+    private boolean wasDraft;
 
     /** Photo stored in the database when editing began (may be null). */
     @Nullable
@@ -97,7 +101,9 @@ public class EditPostActivity extends AppCompatActivity {
         setSupportActionBar(binding.toolbar);
 
         postId = getIntent().getLongExtra(Navigation.EXTRA_POST_ID, Post.NO_ID);
-        setTitle(postId == Post.NO_ID ? R.string.title_new_post : R.string.title_edit_post);
+        boolean isNew = postId == Post.NO_ID;
+        setTitle(isNew ? R.string.title_new_post : R.string.title_edit_post);
+        binding.btnSave.setText(isNew ? R.string.action_save_offline : R.string.action_save_changes);
         binding.titleLayout.setCounterMaxLength(PostValidator.MAX_TITLE_LENGTH);
 
         binding.toolbar.setNavigationOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
@@ -108,26 +114,35 @@ public class EditPostActivity extends AppCompatActivity {
             }
         });
 
-        binding.btnGallery.setOnClickListener(v -> pickImage.launch(new PickVisualMediaRequest.Builder()
-                .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
-                .build()));
+        binding.btnGallery.setOnClickListener(v -> launchGallery());
         binding.btnCamera.setOnClickListener(v -> launchCamera());
+        binding.btnReplacePhoto.setOnClickListener(v -> chooseReplacementSource());
         binding.btnRemovePhoto.setOnClickListener(v -> {
             currentImage = null;
             renderImage();
             Toast.makeText(this, R.string.photo_removed, Toast.LENGTH_SHORT).show();
         });
-        binding.btnSave.setOnClickListener(v -> save());
+        binding.btnSave.setOnClickListener(v -> save(false, null));
+        binding.btnDraft.setOnClickListener(v -> save(true, null));
         clearErrorOnEdit(binding.titleLayout);
         clearErrorOnEdit(binding.contentLayout);
+        binding.contentInput.addTextChangedListener(new SimpleWatcher(this::updateCounter));
+        updateCounter();
 
         if (savedInstanceState != null) {
             restoreState(savedInstanceState);
             renderImage();
-        } else if (postId != Post.NO_ID) {
+        } else if (!isNew) {
             loadPost();
         } else {
             renderImage();
+            // Shortcut from the Gallery tab: jump straight into the camera or photo picker.
+            String startWith = getIntent().getStringExtra(Navigation.EXTRA_START_WITH);
+            if (Navigation.START_CAMERA.equals(startWith)) {
+                launchCamera();
+            } else if (Navigation.START_GALLERY.equals(startWith)) {
+                launchGallery();
+            }
         }
     }
 
@@ -149,6 +164,7 @@ public class EditPostActivity extends AppCompatActivity {
                 initialTitle = post.getTitle();
                 initialContent = post.getContent();
                 createdAt = post.getCreatedAt();
+                wasDraft = post.isDraft();
                 originalImage = post.getImageFileName();
                 currentImage = originalImage;
                 binding.titleInput.setText(initialTitle);
@@ -159,7 +175,34 @@ public class EditPostActivity extends AppCompatActivity {
         });
     }
 
+    private void updateCounter() {
+        int length = contentText().length();
+        binding.charCounter.setText(getString(R.string.char_counter, length, PostValidator.MAX_CONTENT_LENGTH));
+        binding.charCounter.setTextColor(ContextCompat.getColor(this,
+                length > PostValidator.MAX_CONTENT_LENGTH ? R.color.status_error : R.color.bs_outline));
+    }
+
     // ---------------------------------------------------------------- photo: gallery & camera
+
+    private void launchGallery() {
+        pickImage.launch(new PickVisualMediaRequest.Builder()
+                .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                .build());
+    }
+
+    private void chooseReplacementSource() {
+        CharSequence[] options = {getString(R.string.action_camera), getString(R.string.action_gallery)};
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.action_replace)
+                .setItems(options, (d, which) -> {
+                    if (which == 0) {
+                        launchCamera();
+                    } else {
+                        launchGallery();
+                    }
+                })
+                .show();
+    }
 
     private void onImagePicked(@Nullable Uri uri) {
         if (uri == null) {
@@ -209,7 +252,7 @@ public class EditPostActivity extends AppCompatActivity {
 
     /** Copies the image into app storage on a background thread, then shows it. */
     private void importImage(@NonNull Uri source, @Nullable File tempToDelete) {
-        binding.previewFrame.setVisibility(View.VISIBLE);
+        binding.previewCard.setVisibility(View.VISIBLE);
         binding.previewProgress.setVisibility(View.VISIBLE);
         setPhotoButtonsEnabled(false);
         Context context = getApplicationContext();
@@ -250,13 +293,10 @@ public class EditPostActivity extends AppCompatActivity {
     private void renderImage() {
         binding.previewProgress.setVisibility(View.GONE);
         if (currentImage == null) {
-            binding.previewFrame.setVisibility(View.GONE);
+            binding.previewCard.setVisibility(View.GONE);
             binding.noPhoto.setText(R.string.photo_none);
-            binding.noPhoto.setVisibility(View.VISIBLE);
-            binding.btnRemovePhoto.setVisibility(View.GONE);
             return;
         }
-        binding.btnRemovePhoto.setVisibility(View.VISIBLE);
         final String name = currentImage;
         int width = getResources().getDisplayMetrics().widthPixels;
         int height = getResources().getDimensionPixelSize(R.dimen.preview_height);
@@ -268,15 +308,24 @@ public class EditPostActivity extends AppCompatActivity {
                 if (isDestroyed() || !Objects.equals(name, currentImage)) {
                     return;
                 }
+                boolean wasHidden = binding.previewCard.getVisibility() != View.VISIBLE;
+                binding.previewCard.setVisibility(View.VISIBLE);
                 if (bitmap == null) {
                     // Attached file is missing: say so, and let the user remove or replace it.
-                    binding.previewFrame.setVisibility(View.GONE);
+                    binding.preview.setImageResource(R.drawable.ill_no_images);
+                    binding.preview.setScaleType(android.widget.ImageView.ScaleType.CENTER_INSIDE);
                     binding.noPhoto.setText(R.string.photo_missing);
-                    binding.noPhoto.setVisibility(View.VISIBLE);
                 } else {
+                    binding.preview.setScaleType(android.widget.ImageView.ScaleType.CENTER_CROP);
                     binding.preview.setImageBitmap(bitmap);
-                    binding.previewFrame.setVisibility(View.VISIBLE);
-                    binding.noPhoto.setVisibility(View.GONE);
+                    binding.noPhoto.setText(R.string.photo_attached);
+                }
+                if (wasHidden) {
+                    // "Beautiful attachment preview": card scales in.
+                    binding.previewCard.setScaleX(0.94f);
+                    binding.previewCard.setScaleY(0.94f);
+                    binding.previewCard.setAlpha(0f);
+                    binding.previewCard.animate().scaleX(1f).scaleY(1f).alpha(1f).setDuration(260).start();
                 }
             });
         });
@@ -286,7 +335,9 @@ public class EditPostActivity extends AppCompatActivity {
         binding.btnGallery.setEnabled(enabled);
         binding.btnCamera.setEnabled(enabled);
         binding.btnRemovePhoto.setEnabled(enabled);
+        binding.btnReplacePhoto.setEnabled(enabled);
         binding.btnSave.setEnabled(enabled && !saving);
+        binding.btnDraft.setEnabled(enabled && !saving);
     }
 
     // ---------------------------------------------------------------- save / validation
@@ -299,7 +350,7 @@ public class EditPostActivity extends AppCompatActivity {
         return binding.contentInput.getText() == null ? "" : binding.contentInput.getText().toString();
     }
 
-    /** Validates both fields, showing errors inline. Returns true if the form is valid. */
+    /** Validates a finished post, showing errors inline. Returns true if the form is valid. */
     private boolean validate() {
         boolean valid = true;
         switch (PostValidator.validateTitle(titleText())) {
@@ -332,16 +383,43 @@ public class EditPostActivity extends AppCompatActivity {
         return valid;
     }
 
-    private void save() {
-        if (saving || !validate()) {
+    /** Drafts only need some text, and must still respect the length limits. */
+    private boolean validateDraft() {
+        if (!PostValidator.isValidDraft(titleText(), contentText())) {
+            Toast.makeText(this, R.string.error_draft_empty, Toast.LENGTH_LONG).show();
+            return false;
+        }
+        boolean ok = true;
+        if (PostValidator.validateTitle(titleText()) == PostValidator.Result.TITLE_TOO_LONG) {
+            binding.titleLayout.setError(getString(R.string.error_title_too_long, PostValidator.MAX_TITLE_LENGTH));
+            ok = false;
+        }
+        if (PostValidator.validateContent(contentText()) == PostValidator.Result.CONTENT_TOO_LONG) {
+            binding.contentLayout.setError(getString(R.string.error_content_too_long, PostValidator.MAX_CONTENT_LENGTH));
+            ok = false;
+        }
+        return ok;
+    }
+
+    /**
+     * Saves the post.
+     *
+     * @param asDraft     true for the Draft button (lenient validation, never published)
+     * @param afterAction optional {@link Navigation#ACTION_PUBLISH} / {@link Navigation#ACTION_SHARE}
+     *                    to run on the detail screen once saved
+     */
+    private void save(boolean asDraft, @Nullable String afterAction) {
+        if (saving || !(asDraft ? validateDraft() : validate())) {
             return;
         }
         saving = true;
         binding.btnSave.setEnabled(false);
+        binding.btnDraft.setEnabled(false);
 
         Post post = new Post(titleText().trim(), contentText().trim(), currentImage);
         post.setId(postId);
         post.setCreatedAt(createdAt);
+        post.setDraft(asDraft);
         final boolean isNew = postId == Post.NO_ID;
         Context context = getApplicationContext();
         AppExecutors.disk().execute(() -> {
@@ -358,12 +436,17 @@ public class EditPostActivity extends AppCompatActivity {
                 if (!success) {
                     if (!isDestroyed()) {
                         binding.btnSave.setEnabled(true);
+                        binding.btnDraft.setEnabled(true);
                     }
                     Toast.makeText(context, R.string.error_save, Toast.LENGTH_LONG).show();
                     return;
                 }
                 cleanUpImagesAfterSave();
-                Toast.makeText(context, isNew ? R.string.saved_new : R.string.saved_update, Toast.LENGTH_SHORT).show();
+                int message = asDraft ? R.string.draft_saved : (isNew ? R.string.saved_new : R.string.saved_update);
+                Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+                if (afterAction != null) {
+                    Navigation.openPostThen(this, post.getId(), afterAction);
+                }
                 finish();
             });
         });
@@ -396,9 +479,11 @@ public class EditPostActivity extends AppCompatActivity {
             return;
         }
         new MaterialAlertDialogBuilder(this)
+                .setIcon(R.drawable.ic_draft)
                 .setTitle(R.string.discard_title)
                 .setMessage(R.string.discard_message)
                 .setPositiveButton(R.string.action_discard, (d, w) -> discardAndFinish())
+                .setNeutralButton(R.string.action_save_draft, (d, w) -> save(true, null))
                 .setNegativeButton(R.string.action_keep_editing, null)
                 .show();
     }
@@ -422,23 +507,31 @@ public class EditPostActivity extends AppCompatActivity {
     }
 
     private static void clearErrorOnEdit(@NonNull TextInputLayout layout) {
-        if (layout.getEditText() == null) {
-            return;
+        if (layout.getEditText() != null) {
+            layout.getEditText().addTextChangedListener(new SimpleWatcher(() -> layout.setError(null)));
         }
-        layout.getEditText().addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+    }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                layout.setError(null);
-            }
+    /** TextWatcher that only cares that the text changed. */
+    private static class SimpleWatcher implements TextWatcher {
+        private final Runnable onChange;
 
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
+        SimpleWatcher(Runnable onChange) {
+            this.onChange = onChange;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            onChange.run();
+        }
     }
 
     @Override
@@ -449,8 +542,11 @@ public class EditPostActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.action_save) {
-            save();
+        if (item.getItemId() == R.id.action_save_publish) {
+            save(false, Navigation.ACTION_PUBLISH);
+            return true;
+        } else if (item.getItemId() == R.id.action_save_share) {
+            save(false, Navigation.ACTION_SHARE);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -467,6 +563,7 @@ public class EditPostActivity extends AppCompatActivity {
         outState.putString(STATE_INITIAL_TITLE, initialTitle);
         outState.putString(STATE_INITIAL_CONTENT, initialContent);
         outState.putLong(STATE_CREATED_AT, createdAt);
+        outState.putBoolean(STATE_WAS_DRAFT, wasDraft);
     }
 
     private void restoreState(@NonNull Bundle state) {
@@ -478,5 +575,6 @@ public class EditPostActivity extends AppCompatActivity {
         initialTitle = state.getString(STATE_INITIAL_TITLE, "");
         initialContent = state.getString(STATE_INITIAL_CONTENT, "");
         createdAt = state.getLong(STATE_CREATED_AT);
+        wasDraft = state.getBoolean(STATE_WAS_DRAFT);
     }
 }

@@ -1,35 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Dark palette (selected automatically when the system is in dark mode). -->
+<!-- ConnectHub dark palette. -->
 <resources>
-    <color name="bs_primary">#C0C1FF</color>
-    <color name="bs_on_primary">#1F1A8C</color>
+    <color name="gradient_start">#4338CA</color>
+    <color name="gradient_mid">#5B5BD6</color>
+    <color name="gradient_end">#6D28D9</color>
+
+    <color name="bs_primary">#A5B4FC</color>
+    <color name="bs_on_primary">#1E1A78</color>
     <color name="bs_primary_container">#3730A3</color>
-    <color name="bs_on_primary_container">#E0E0FF</color>
-    <color name="bs_secondary">#83D5C9</color>
-    <color name="bs_on_secondary">#003731</color>
-    <color name="bs_secondary_container">#115049</color>
-    <color name="bs_on_secondary_container">#CCF2EC</color>
-    <color name="bs_tertiary">#FFB77C</color>
-    <color name="bs_on_tertiary">#4A2800</color>
-    <color name="bs_tertiary_container">#6A3C00</color>
-    <color name="bs_on_tertiary_container">#FFDCC2</color>
-    <color name="bs_error">#FFB4AB</color>
-    <color name="bs_on_error">#690005</color>
-    <color name="bs_error_container">#93000A</color>
-    <color name="bs_on_error_container">#FFDAD6</color>
-    <color name="bs_background">#131318</color>
-    <color name="bs_surface">#131318</color>
-    <color name="bs_on_surface">#E4E1E9</color>
-    <color name="bs_surface_variant">#46464F</color>
-    <color name="bs_on_surface_variant">#C7C5D0</color>
-    <color name="bs_surface_container_lowest">#0E0E13</color>
-    <color name="bs_surface_container_low">#1B1B21</color>
-    <color name="bs_surface_container">#1F1F25</color>
-    <color name="bs_surface_container_high">#2A292F</color>
-    <color name="bs_surface_container_highest">#35343A</color>
-    <color name="bs_outline">#91909A</color>
-    <color name="bs_outline_variant">#46464F</color>
-    <color name="bs_highlight">#7A5B00</color>
-    <color name="bs_success">#7BDA96</color>
-    <color name="bs_launcher_background">#4F46E5</color>
+    <color name="bs_on_primary_container">#E6E4FF</color>
+    <color name="bs_secondary">#C4B5FD</color>
+    <color name="bs_on_secondary">#2E0F6B</color>
+    <color name="bs_secondary_container">#5B21B6</color>
+    <color name="bs_on_secondary_container">#EFE6FF</color>
+    <color name="bs_tertiary">#A5B4FC</color>
+    <color name="bs_on_tertiary">#1E1B4B</color>
+    <color name="bs_tertiary_container">#312E81</color>
+    <color name="bs_on_tertiary_container">#E0E7FF</color>
+    <color name="bs_error">#F87171</color>
+    <color name="bs_on_error">#450A0A</color>
+    <color name="bs_error_container">#7F1D1D</color>
+    <color name="bs_on_error_container">#FEE2E2</color>
+    <color name="bs_background">#0E0F1A</color>
+    <color name="bs_surface">#0E0F1A</color>
+    <color name="bs_on_surface">#ECEDF5</color>
+    <color name="bs_surface_variant">#23253A</color>
+    <color name="bs_on_surface_variant">#A9ADC4</color>
+    <color name="bs_surface_container_lowest">#0A0B14</color>
+    <color name="bs_surface_container_low">#151626</color>
+    <color name="bs_surface_container">#191A2B</color>
+    <color name="bs_surface_container_high">#212336</color>
+    <color name="bs_surface_container_highest">#2A2C41</color>
+    <color name="bs_outline">#71758D</color>
+    <color name="bs_outline_variant">#2C2E44</color>
+
+    <color name="status_success">#4ADE80</color>
+    <color name="status_success_bg">#14532D</color>
+    <color name="status_warning">#FDBA74</color>
+    <color name="status_warning_bg">#7C2D12</color>
+    <color name="status_offline">#A5B4FC</color>
+    <color name="status_offline_bg">#312E81</color>
+    <color name="status_error">#FCA5A5</color>
+    <color name="status_error_bg">#7F1D1D</color>
+
+    <color name="glass_fill">#1FFFFFFF</color>
+    <color name="glass_stroke">#33FFFFFF</color>
+    <color name="skeleton">#23253A</color>
+
+    <color name="bs_highlight">#854D0E</color>
 </resources>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Create / edit screen: title, body and photo attachment (gallery or camera). -->
+<!-- Create / edit: large title, body with character counter, attachment card, Draft / Save bar. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/root"
@@ -10,7 +10,7 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
-        style="@style/Widget.BlogSpace.Toolbar"
+        style="@style/Widget.CH.Toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         app:navigationContentDescription="@string/action_back"
@@ -29,48 +29,135 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="@dimen/screen_padding"
+                android:paddingHorizontal="@dimen/screen_padding"
+                android:paddingBottom="@dimen/space_xl"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintWidth_max="@dimen/content_max_width">
 
+                <!-- Attachment preview -->
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/preview_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/preview_height"
+                    android:layout_marginBottom="@dimen/space_l"
+                    android:visibility="gone"
+                    app:cardElevation="6dp"
+                    app:strokeWidth="0dp">
+
+                    <ImageView
+                        android:id="@+id/preview"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/cd_photo_preview"
+                        android:scaleType="centerCrop" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="96dp"
+                        android:layout_gravity="bottom"
+                        android:background="@drawable/bg_scrim_bottom" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|end"
+                        android:layout_margin="@dimen/space_m"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_replace_photo"
+                            style="@style/Widget.CH.Button.Tonal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/space_s"
+                            android:minHeight="40dp"
+                            android:text="@string/action_replace"
+                            app:icon="@drawable/ic_refresh" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn_remove_photo"
+                            style="@style/Widget.CH.Button.Tonal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:minHeight="40dp"
+                            android:text="@string/action_remove_photo"
+                            android:textColor="@color/status_error"
+                            app:backgroundTint="@color/status_error_bg"
+                            app:icon="@drawable/ic_delete"
+                            app:iconTint="@color/status_error" />
+                    </LinearLayout>
+
+                    <com.google.android.material.progressindicator.CircularProgressIndicator
+                        android:id="@+id/preview_progress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:contentDescription="@string/photo_processing"
+                        android:indeterminate="true"
+                        android:visibility="gone" />
+                </com.google.android.material.card.MaterialCardView>
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/title_layout"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/hint_title"
+                    app:boxBackgroundMode="none"
                     app:counterEnabled="true"
-                    app:counterMaxLength="120">
+                    app:counterMaxLength="120"
+                    app:hintEnabled="false">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/title_input"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:hint="@string/hint_title"
                         android:imeOptions="actionNext"
-                        android:inputType="textCapSentences"
-                        android:maxLines="2" />
+                        android:inputType="textCapSentences|textMultiLine"
+                        android:maxLines="3"
+                        android:paddingHorizontal="0dp"
+                        android:textAppearance="?attr/textAppearanceHeadlineSmall" />
                 </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/space_s" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/content_layout"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/space_s"
-                    android:hint="@string/hint_content">
+                    app:boxBackgroundMode="none"
+                    app:hintEnabled="false">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/content_input"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@null"
                         android:gravity="top|start"
+                        android:hint="@string/hint_content"
                         android:inputType="textMultiLine|textCapSentences"
-                        android:minLines="8" />
+                        android:lineSpacingExtra="6dp"
+                        android:minLines="8"
+                        android:paddingHorizontal="0dp"
+                        android:textAppearance="?attr/textAppearanceBodyLarge" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <TextView
+                    android:id="@+id/char_counter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:textAppearance="?attr/textAppearanceLabelSmall"
+                    android:textColor="?attr/colorOutline" />
+
+                <!-- Attach row -->
                 <com.google.android.material.card.MaterialCardView
+                    style="@style/Widget.CH.Card.Flat"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/space_l">
@@ -86,40 +173,15 @@
                             android:layout_height="wrap_content"
                             android:accessibilityHeading="true"
                             android:text="@string/label_photo"
-                            android:textAppearance="@style/TextAppearance.BlogSpace.SectionHeader" />
-
-                        <FrameLayout
-                            android:id="@+id/preview_frame"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/preview_height"
-                            android:layout_marginTop="@dimen/space_m"
-                            android:background="@drawable/bg_thumb"
-                            android:visibility="gone">
-
-                            <ImageView
-                                android:id="@+id/preview"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:contentDescription="@string/cd_photo_preview"
-                                android:scaleType="centerCrop" />
-
-                            <com.google.android.material.progressindicator.CircularProgressIndicator
-                                android:id="@+id/preview_progress"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:contentDescription="@string/photo_processing"
-                                android:indeterminate="true"
-                                android:visibility="gone" />
-                        </FrameLayout>
+                            android:textAppearance="?attr/textAppearanceTitleSmall" />
 
                         <TextView
                             android:id="@+id/no_photo"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/space_s"
+                            android:layout_marginTop="2dp"
                             android:text="@string/photo_none"
-                            android:textAppearance="?attr/textAppearanceBodyMedium"
+                            android:textAppearance="?attr/textAppearanceBodySmall"
                             android:textColor="?attr/colorOnSurfaceVariant" />
 
                         <LinearLayout
@@ -129,49 +191,57 @@
                             android:orientation="horizontal">
 
                             <com.google.android.material.button.MaterialButton
-                                android:id="@+id/btn_gallery"
-                                style="@style/Widget.Material3.Button.TonalButton"
+                                android:id="@+id/btn_camera"
+                                style="@style/Widget.CH.Button.Outlined"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="@dimen/space_s"
                                 android:layout_weight="1"
-                                android:text="@string/action_gallery"
-                                app:icon="@drawable/ic_photo_library" />
+                                android:text="@string/action_camera"
+                                app:icon="@drawable/ic_camera" />
 
                             <com.google.android.material.button.MaterialButton
-                                android:id="@+id/btn_camera"
-                                style="@style/Widget.Material3.Button.TonalButton"
+                                android:id="@+id/btn_gallery"
+                                style="@style/Widget.CH.Button.Outlined"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/space_s"
                                 android:layout_weight="1"
-                                android:text="@string/action_camera"
-                                app:icon="@drawable/ic_camera" />
+                                android:text="@string/action_gallery"
+                                app:icon="@drawable/ic_photo_library" />
                         </LinearLayout>
-
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/btn_remove_photo"
-                            style="@style/Widget.Material3.Button.TextButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="end"
-                            android:text="@string/action_remove_photo"
-                            android:textColor="?attr/colorError"
-                            android:visibility="gone"
-                            app:icon="@drawable/ic_delete"
-                            app:iconTint="?attr/colorError" />
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_save"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/screen_padding"
-        android:layout_marginVertical="@dimen/space_m"
-        android:text="@string/action_save"
-        app:icon="@drawable/ic_check" />
+        android:background="@drawable/bg_bottom_bar"
+        android:elevation="12dp"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/screen_padding"
+        android:paddingVertical="@dimen/space_m">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_draft"
+            style="@style/Widget.CH.Button.Outlined"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/space_s"
+            android:layout_weight="1"
+            android:text="@string/action_save_draft"
+            app:icon="@drawable/ic_draft" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_save"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_s"
+            android:layout_weight="2"
+            android:text="@string/action_save_offline"
+            app:icon="@drawable/ic_check" />
+    </LinearLayout>
 </LinearLayout>

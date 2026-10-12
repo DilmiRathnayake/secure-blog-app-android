@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.blogspace.app.R;
 import com.blogspace.app.data.Post;
 import com.blogspace.app.databinding.ItemPostBinding;
+import com.blogspace.app.ui.widget.StatusBadge;
 import com.blogspace.app.util.ThumbnailLoader;
 import com.blogspace.app.util.UiUtils;
 import com.google.android.material.color.MaterialColors;
@@ -70,6 +71,12 @@ public class PostAdapter extends ListAdapter<Post, PostAdapter.PostViewHolder> {
             return a.hasSameContentAs(b);
         }
     };
+
+    /** Post shown at an adapter position (used by swipe actions). */
+    @NonNull
+    public Post getPostAt(int position) {
+        return getItem(position);
+    }
 
     @Override
     public long getItemId(int position) {
@@ -225,11 +232,12 @@ public class PostAdapter extends ListAdapter<Post, PostAdapter.PostViewHolder> {
 
         void bind(@NonNull Post post) {
             Context ctx = b.getRoot().getContext();
-            b.title.setText(UiUtils.highlight(ctx, post.getTitle(), highlightQuery));
+            String title = post.getTitle().isEmpty() ? ctx.getString(R.string.untitled_draft) : post.getTitle();
+            b.title.setText(UiUtils.highlight(ctx, title, highlightQuery));
             String snippet = UiUtils.snippetAround(post.getContent(), highlightQuery, 30);
             b.preview.setText(UiUtils.highlight(ctx, snippet, highlightQuery));
             b.date.setText(ctx.getString(R.string.updated_relative, UiUtils.relativeTime(post.getUpdatedAt())));
-            b.publishedBadge.setVisibility(post.isPublished() ? View.VISIBLE : View.GONE);
+            StatusBadge.apply(b.statusBadge, post.getStatus());
             if (post.hasImage()) {
                 b.thumbnail.setVisibility(View.VISIBLE);
                 ThumbnailLoader.load(b.thumbnail, post.getImageFileName(), thumbPx);

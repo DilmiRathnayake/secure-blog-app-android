@@ -29,6 +29,13 @@ public class PostValidatorTest {
                 PostValidator.validateContent(repeat('b', PostValidator.MAX_CONTENT_LENGTH + 1)));
     }
 
+    @Test
+    public void draft_needsTitleOrContent() {
+        org.junit.Assert.assertFalse(PostValidator.isValidDraft("  ", null));
+        org.junit.Assert.assertTrue(PostValidator.isValidDraft("Idea", ""));
+        org.junit.Assert.assertTrue(PostValidator.isValidDraft("", "Some text"));
+    }
+
     private static String repeat(char c, int n) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < n; i++) {

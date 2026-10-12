@@ -1,19 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Change this single value to rename the app. -->
-    <string name="app_name">BlogSpace</string>
+    <string name="app_name">ConnectHub</string>
+    <string name="app_tagline">Offline &amp; online social blogging</string>
 
     <!-- Navigation -->
-    <string name="nav_home">Home</string>
-    <string name="nav_posts">Posts</string>
-    <string name="nav_search">Search</string>
-    <string name="nav_publish">Publish</string>
-    <string name="nav_about">About</string>
 
     <!-- Common actions -->
     <string name="action_new_post">New post</string>
     <string name="action_write_post">Write a new post</string>
-    <string name="action_save">Save</string>
     <string name="action_edit">Edit</string>
     <string name="action_delete">Delete</string>
     <string name="action_share">Share</string>
@@ -30,23 +25,12 @@
     <string name="action_back">Back</string>
 
     <!-- Home -->
-    <string name="home_greeting">Your blog, on your device</string>
-    <string name="home_subtitle">Write, organise and share posts — even with no internet connection.</string>
-    <string name="stat_total">Posts</string>
-    <string name="stat_with_images">With photos</string>
-    <string name="stat_published">Published</string>
-    <string name="home_recent">Recent posts</string>
-    <string name="status_offline">You are offline. Writing, editing, searching and deleting still work — posts are saved on this device.</string>
-    <string name="status_online">Online. Posts are always saved on this device first.</string>
 
     <!-- Post list -->
-    <string name="posts_empty_title">No posts yet</string>
-    <string name="posts_empty_body">Tap “New post” to write your first blog post. It is saved on this device and works offline.</string>
     <plurals name="selected_count">
         <item quantity="one">%d selected</item>
         <item quantity="other">%d selected</item>
     </plurals>
-    <string name="label_published">Published</string>
     <string name="cd_post_thumbnail">Photo attached to the post</string>
     <string name="cd_select_post">Select post %1$s</string>
     <string name="updated_relative">Updated %1$s</string>
@@ -68,9 +52,6 @@
     <string name="nothing_selected">Select at least one post first</string>
 
     <!-- Search -->
-    <string name="search_hint">Search titles and content</string>
-    <string name="search_prompt_title">Find a post</string>
-    <string name="search_prompt_body">Type any word or part of a word. Search ignores upper/lower case and looks in both titles and post text.</string>
     <string name="search_no_results_title">No matching posts</string>
     <string name="search_no_results_body">Nothing contains “%1$s”. Check the spelling or try a shorter word.</string>
     <plurals name="search_result_count">
@@ -79,12 +60,6 @@
     </plurals>
 
     <!-- Editor -->
-    <string name="title_new_post">New post</string>
-    <string name="title_edit_post">Edit post</string>
-    <string name="hint_title">Title</string>
-    <string name="hint_content">Write your post…</string>
-    <string name="label_photo">Photo</string>
-    <string name="photo_none">No photo attached. Add one from your gallery or take a new one.</string>
     <string name="action_gallery">Gallery</string>
     <string name="action_camera">Camera</string>
     <string name="action_remove_photo">Remove photo</string>
@@ -116,9 +91,6 @@
     <string name="action_view_online">View online</string>
 
     <!-- Share -->
-    <string name="share_choose_title">Share post</string>
-    <string name="share_any_app">Share with any app</string>
-    <string name="share_email">Send by email</string>
     <string name="share_chooser_title">Share “%1$s” via</string>
     <string name="share_footer">Shared from %1$s</string>
     <string name="error_no_share_app">No app on this device can share this post</string>
@@ -151,14 +123,6 @@
     </plurals>
     <string name="publish_confirm_blogger">They will be published publicly to “%1$s” on Blogger.</string>
     <string name="publish_confirm_test">Test mode is on: the upload will be simulated and nothing will be sent online.</string>
-    <string name="publish_progress">Publishing %1$d of %2$d…</string>
-    <string name="publish_progress_title">Publishing</string>
-    <string name="publish_result_title">Publishing results</string>
-    <string name="publish_result_test_title">Test mode results (simulated)</string>
-    <string name="publish_result_ok">✓ %1$s\n   %2$s</string>
-    <string name="publish_result_ok_no_url">✓ %1$s</string>
-    <string name="publish_result_simulated">✓ %1$s — simulated only, not uploaded</string>
-    <string name="publish_result_fail">✗ %1$s\n   %2$s</string>
     <string name="publish_result_image_omitted">   (Blogger rejected the embedded photo, so it was published without it.)</string>
     <string name="publish_need_setup_title">Publishing is not set up</string>
     <string name="publish_need_setup_body">Connect your Google account and choose a Blogger blog first, or switch to Test mode.</string>
@@ -178,15 +142,185 @@
     <string name="err_unknown">Unexpected error: %1$s</string>
 
     <!-- About -->
-    <string name="about_title">About %1$s</string>
     <string name="about_version">Version %1$s</string>
-    <string name="about_body">BlogSpace is an offline-first blogging app. Every post is stored in an SQLite database on this device, so you can write, edit, search and delete posts without an internet connection.</string>
     <string name="about_features_title">What you can do</string>
-    <string name="about_features">• Create, edit, view and delete posts offline\n• Attach a photo from the gallery or camera\n• Search titles and text (partial, case-insensitive)\n• Select several posts to delete or publish together\n• Share a post (text and photo) with email or any app\n• Publish one or many posts to your Blogger blog</string>
     <string name="about_howto_title">Tips</string>
-    <string name="about_howto">• Long-press a post in the Posts tab to start selecting.\n• Use “Select all” or “Clear selection” from the selection bar.\n• Open a post and tap Share to email it with its photo.\n• Set up publishing once in the Publish tab.</string>
     <string name="about_privacy_title">Privacy &amp; security</string>
-    <string name="about_privacy">Posts and photos stay in the app’s private storage. Nothing is uploaded unless you choose Publish. Google sign-in is handled by Google Play services; the app never sees your password and stores no passwords or tokens.</string>
     <string name="about_libraries_title">Third-party libraries</string>
-    <string name="about_libraries">AndroidX (AppCompat, Activity, Core, RecyclerView, ConstraintLayout, ExifInterface) — Apache 2.0\nMaterial Components for Android — Apache 2.0\nGoogle Play services Auth — Google APIs terms\nIcons: Material Design Icons — Apache 2.0</string>
+    <string name="about_libraries">AndroidX (AppCompat, Activity, Core, RecyclerView, ConstraintLayout, ExifInterface) — Apache 2.0\nMaterial Components for Android — Apache 2.0\nGoogle Play services Auth — Google APIs terms\nIcons: Material Design Icons — Apache 2.0\nInter typeface — SIL Open Font License 1.1</string>
+
+    <!-- ===================== ConnectHub UI ===================== -->
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_posts">Posts</string>
+    <string name="nav_upload">Upload</string>
+    <string name="nav_gallery">Gallery</string>
+    <string name="nav_profile">Profile</string>
+
+    <!-- Splash / onboarding -->
+    <string name="splash_loading">Loading your posts…</string>
+    <string name="onb_skip">Skip</string>
+    <string name="onb_next">Next</string>
+    <string name="onb_get_started">Get started</string>
+    <string name="onb1_title">Welcome to ConnectHub</string>
+    <string name="onb1_body">Your personal space to write, collect photos and share stories — beautifully organised in one place.</string>
+    <string name="onb2_title">Blog anywhere, even offline</string>
+    <string name="onb2_body">Every post is saved in a database on your phone. Write, edit, search and delete without an internet connection.</string>
+    <string name="onb3_title">Share &amp; publish to the cloud</string>
+    <string name="onb3_body">Send posts by email or any app, and publish them to your own Blogger blog when you are back online.</string>
+    <string name="cd_onboarding_page">Page %1$d of %2$d</string>
+
+    <!-- Profile setup -->
+    <string name="profile_setup_title">Set up your profile</string>
+    <string name="profile_setup_body">Your name and photo are only stored on this device and personalise your dashboard. No account or password needed.</string>
+    <string name="hint_your_name">Your name</string>
+    <string name="action_continue">Continue</string>
+    <string name="action_skip_for_now">Skip for now</string>
+    <string name="action_change_photo">Change photo</string>
+    <string name="cd_avatar">Profile photo</string>
+    <string name="default_user_name">Blogger</string>
+
+    <!-- Home -->
+    <string name="greeting_morning">Good morning,</string>
+    <string name="greeting_afternoon">Good afternoon,</string>
+    <string name="greeting_evening">Good evening,</string>
+    <string name="home_search_hint">Search your posts…</string>
+    <string name="home_recent">Recent posts</string>
+    <string name="stat_total">Total posts</string>
+    <string name="stat_offline">Offline</string>
+    <string name="stat_uploaded">Uploaded</string>
+    <string name="stat_drafts">Drafts</string>
+    <string name="chip_online">Online</string>
+    <string name="chip_offline">Offline mode</string>
+    <string name="cd_open_search">Search posts</string>
+    <string name="cd_open_profile">Open profile</string>
+
+    <!-- Posts list -->
+    <string name="posts_title">My posts</string>
+    <plurals name="post_count_label">
+        <item quantity="one">%d post</item>
+        <item quantity="other">%d posts</item>
+    </plurals>
+    <string name="posts_empty_title">No posts yet</string>
+    <string name="posts_empty_body">Tap “New post” to write your first story. It is saved on this device and works offline.</string>
+    <string name="posts_filter_empty_title">Nothing here</string>
+    <string name="posts_filter_empty_body">No posts match this filter yet.</string>
+    <string name="filter_newest">Newest</string>
+    <string name="filter_oldest">Oldest</string>
+    <string name="filter_uploaded">Uploaded</string>
+    <string name="filter_offline">Offline</string>
+    <string name="filter_draft">Draft</string>
+    <string name="status_draft">Draft</string>
+    <string name="status_offline">Offline</string>
+    <string name="status_uploaded">Uploaded</string>
+    <string name="untitled_draft">Untitled draft</string>
+    <string name="swipe_deleted">Post deleted</string>
+    <string name="action_undo">Undo</string>
+    <string name="cd_close_selection">Exit selection</string>
+    <string name="cd_upload_selected">Upload selected</string>
+    <string name="cd_delete_selected">Delete selected</string>
+
+    <!-- Search -->
+    <string name="search_hint">Search titles and content</string>
+    <string name="search_recent">Recent searches</string>
+    <string name="search_clear_history">Clear</string>
+    <string name="search_prompt_title">Find a post</string>
+    <string name="search_prompt_body">Type any word or part of a word. Search ignores upper/lower case and looks in titles and post text.</string>
+
+    <!-- Editor -->
+    <string name="title_new_post">New post</string>
+    <string name="title_edit_post">Edit post</string>
+    <string name="hint_title">Give it a title</string>
+    <string name="hint_content">Write your thoughts…</string>
+    <string name="char_counter">%1$d / %2$d</string>
+    <string name="label_photo">Attachment</string>
+    <string name="photo_none">Add a photo from your gallery or camera.</string>
+    <string name="action_save_offline">Save offline</string>
+    <string name="action_save_changes">Save changes</string>
+    <string name="action_save_draft">Draft</string>
+    <string name="action_replace">Replace</string>
+    <string name="action_save_and_publish">Save &amp; publish online</string>
+    <string name="action_save_and_share">Save &amp; share</string>
+    <string name="draft_saved">Draft saved</string>
+    <string name="error_draft_empty">Write a title or some text before saving a draft</string>
+    <string name="draft_cannot_publish_title">Finish this draft first</string>
+    <string name="draft_cannot_publish_body">Drafts stay private on your device. Open it, complete the title and text, then tap “Save offline” before publishing.</string>
+    <plurals name="drafts_skipped">
+        <item quantity="one">%d draft was skipped (drafts are never uploaded).</item>
+        <item quantity="other">%d drafts were skipped (drafts are never uploaded).</item>
+    </plurals>
+
+    <!-- Detail -->
+    <string name="action_upload">Upload</string>
+
+    <!-- Share sheet -->
+    <string name="share_sheet_title">Share post</string>
+    <string name="share_target_email">Email</string>
+    <string name="share_target_copy">Copy text</string>
+    <string name="share_target_copy_link">Copy link</string>
+    <string name="share_target_more">More</string>
+    <string name="copied_to_clipboard">Copied to clipboard</string>
+
+    <!-- Upload -->
+    <string name="upload_title">Upload</string>
+    <string name="upload_subtitle">Publish finished posts to your online blog. Drafts stay on your device.</string>
+    <string name="upload_destination">Destination</string>
+    <string name="upload_dest_blogger">Blogger · %1$s</string>
+    <string name="upload_dest_not_set">Blogger · not connected</string>
+    <string name="upload_dest_test">Test mode · simulated</string>
+    <string name="upload_settings">Settings</string>
+    <string name="upload_queue">Upload queue</string>
+    <string name="upload_queue_count">Upload queue · %1$d</string>
+    <string name="profile_version">%1$s · Version %2$s</string>
+    <plurals name="upload_button">
+        <item quantity="one">Upload %d post</item>
+        <item quantity="other">Upload %d posts</item>
+    </plurals>
+    <string name="upload_select_some">Select posts to upload</string>
+    <string name="upload_empty_title">All caught up</string>
+    <string name="upload_empty_body">Every finished post has been uploaded. New offline posts will appear here.</string>
+    <string name="upload_in_progress">Uploading…</string>
+    <string name="upload_percent">%1$d%%</string>
+    <string name="upload_done_title">Upload complete</string>
+    <string name="upload_partial_title">Some uploads failed</string>
+    <string name="upload_failed_title">Upload failed</string>
+    <string name="upload_simulated_row">Simulated only — nothing was uploaded</string>
+    <string name="upload_simulated_title">Test upload complete</string>
+    <string name="action_retry">Retry failed</string>
+    <string name="action_done">Done</string>
+    <string name="connection_lost_title">Connection lost</string>
+
+    <!-- Gallery -->
+    <string name="gallery_title">Gallery</string>
+    <string name="gallery_subtitle">Every photo attached to your posts</string>
+    <string name="gallery_camera">Camera upload</string>
+    <string name="gallery_pick">Gallery upload</string>
+    <string name="gallery_empty_title">No images yet</string>
+    <string name="gallery_empty_body">Photos you attach to posts appear here. Start one with the camera or your gallery.</string>
+    <string name="action_open_post">Open post</string>
+    <string name="action_remove_image">Remove image</string>
+    <string name="remove_image_title">Remove this photo?</string>
+    <string name="remove_image_body">The photo is removed from “%1$s”. The post text stays.</string>
+    <string name="image_removed">Photo removed</string>
+
+    <!-- Profile & settings -->
+    <string name="profile_edit">Edit profile</string>
+    <string name="settings_title">Settings</string>
+    <string name="setting_theme">Theme</string>
+    <string name="theme_system">System default</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="setting_dark_mode">Dark mode</string>
+    <string name="setting_publishing">Publishing account</string>
+    <string name="setting_privacy">Privacy</string>
+    <string name="setting_about">About ConnectHub</string>
+    <string name="setting_onboarding">Show introduction again</string>
+    <string name="profile_saved">Profile updated</string>
+
+    <!-- About -->
+    <string name="about_title">About %1$s</string>
+    <string name="about_body">ConnectHub is an offline-first social blogging app. Every post is stored in an SQLite database on this device, so you can write, edit, search and delete posts without an internet connection.</string>
+    <string name="about_features">• Create, edit, view and delete posts offline\n• Save drafts and filter by Draft, Offline or Uploaded\n• Attach a photo from the gallery or camera\n• Search titles and text (partial, case-insensitive)\n• Select several posts to delete or upload together\n• Share a post (text and photo) by email or any app\n• Publish one or many posts to your Blogger blog</string>
+    <string name="about_howto">• Swipe a post left to delete (with Undo) or right to edit.\n• Long-press a post to start selecting; use Select all or the X to clear.\n• Open a post and tap Share to email it with its photo.\n• Set up publishing once from Upload → Settings.</string>
+    <string name="about_privacy">Posts, photos and your profile stay in the app’s private storage. Nothing is uploaded unless you choose Upload. Google sign-in is handled by Google Play services; the app never sees your password and stores no passwords or tokens.</string>
 </resources>

@@ -1,35 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Light palette. values-night/colors.xml redefines the same names for dark mode. -->
+<!-- ConnectHub light palette. values-night/colors.xml redefines the same names for dark mode. -->
 <resources>
+    <!-- Brand -->
+    <color name="brand_indigo">#4F46E5</color>
+    <color name="brand_purple">#7C3AED</color>
+    <color name="brand_violet">#6366F1</color>
+    <color name="gradient_start">#4F46E5</color>
+    <color name="gradient_mid">#6366F1</color>
+    <color name="gradient_end">#7C3AED</color>
+
+    <!-- Material 3 roles -->
     <color name="bs_primary">#4F46E5</color>
     <color name="bs_on_primary">#FFFFFF</color>
-    <color name="bs_primary_container">#E0E0FF</color>
-    <color name="bs_on_primary_container">#14105E</color>
-    <color name="bs_secondary">#0F766E</color>
+    <color name="bs_primary_container">#E6E4FF</color>
+    <color name="bs_on_primary_container">#1E1A78</color>
+    <color name="bs_secondary">#7C3AED</color>
     <color name="bs_on_secondary">#FFFFFF</color>
-    <color name="bs_secondary_container">#CCF2EC</color>
-    <color name="bs_on_secondary_container">#00201C</color>
-    <color name="bs_tertiary">#B45309</color>
+    <color name="bs_secondary_container">#EFE6FF</color>
+    <color name="bs_on_secondary_container">#2E0F6B</color>
+    <color name="bs_tertiary">#6366F1</color>
     <color name="bs_on_tertiary">#FFFFFF</color>
-    <color name="bs_tertiary_container">#FFE4C7</color>
-    <color name="bs_on_tertiary_container">#2E1500</color>
-    <color name="bs_error">#BA1A1A</color>
+    <color name="bs_tertiary_container">#E0E7FF</color>
+    <color name="bs_on_tertiary_container">#1E1B4B</color>
+    <color name="bs_error">#DC2626</color>
     <color name="bs_on_error">#FFFFFF</color>
-    <color name="bs_error_container">#FFDAD6</color>
-    <color name="bs_on_error_container">#410002</color>
-    <color name="bs_background">#F7F7FB</color>
-    <color name="bs_surface">#F7F7FB</color>
-    <color name="bs_on_surface">#1B1B21</color>
-    <color name="bs_surface_variant">#E3E1EC</color>
-    <color name="bs_on_surface_variant">#46464F</color>
+    <color name="bs_error_container">#FEE2E2</color>
+    <color name="bs_on_error_container">#7F1D1D</color>
+    <color name="bs_background">#FFFFFF</color>
+    <color name="bs_surface">#FFFFFF</color>
+    <color name="bs_on_surface">#111827</color>
+    <color name="bs_surface_variant">#F1F2F7</color>
+    <color name="bs_on_surface_variant">#5B6072</color>
     <color name="bs_surface_container_lowest">#FFFFFF</color>
-    <color name="bs_surface_container_low">#F1F0F7</color>
-    <color name="bs_surface_container">#EBEAF2</color>
-    <color name="bs_surface_container_high">#E5E4EC</color>
-    <color name="bs_surface_container_highest">#DFDEE6</color>
-    <color name="bs_outline">#777680</color>
-    <color name="bs_outline_variant">#C7C5D0</color>
-    <color name="bs_highlight">#FFE08A</color>
-    <color name="bs_success">#1B7A3E</color>
-    <color name="bs_launcher_background">#4F46E5</color>
+    <color name="bs_surface_container_low">#F8F9FC</color>
+    <color name="bs_surface_container">#F4F5F9</color>
+    <color name="bs_surface_container_high">#EEEFF5</color>
+    <color name="bs_surface_container_highest">#E7E8F0</color>
+    <color name="bs_outline">#9CA0B3</color>
+    <color name="bs_outline_variant">#E6E7EF</color>
+
+    <!-- Status -->
+    <color name="status_success">#16A34A</color>
+    <color name="status_success_bg">#DCFCE7</color>
+    <color name="status_warning">#EA580C</color>
+    <color name="status_warning_bg">#FFEDD5</color>
+    <color name="status_offline">#4F46E5</color>
+    <color name="status_offline_bg">#E6E4FF</color>
+    <color name="status_error">#DC2626</color>
+    <color name="status_error_bg">#FEE2E2</color>
+
+    <!-- Glass / overlays -->
+    <color name="glass_fill">#26FFFFFF</color>
+    <color name="glass_stroke">#4DFFFFFF</color>
+    <color name="on_gradient">#FFFFFF</color>
+    <color name="on_gradient_muted">#D9FFFFFF</color>
+    <color name="skeleton">#ECEDF3</color>
+
+    <color name="bs_highlight">#FDE68A</color>
 </resources>

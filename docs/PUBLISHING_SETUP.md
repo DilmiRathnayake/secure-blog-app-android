@@ -1,6 +1,6 @@
 # Blogger publishing — one-time setup
 
-BlogSpace publishes posts to **Blogger** (blogger.com) through the official **Blogger API v3**, using
+ConnectHub publishes posts to **Blogger** (blogger.com) through the official **Blogger API v3**, using
 Google sign-in (OAuth 2.0) provided by Google Play services.
 
 **No password, API key, client secret or token is stored in the source code.** An Android OAuth
@@ -37,10 +37,10 @@ If `keytool` is not found, use Android Studio's own copy:
 `"C:\Program Files\Android\Android Studio\jbr\bin\keytool.exe"`.
 
 ## 3. Google Cloud project
-1. Open <https://console.cloud.google.com/> and create a project (e.g. `BlogSpace`).
+1. Open <https://console.cloud.google.com/> and create a project (e.g. `ConnectHub`).
 2. **APIs & Services → Library**, search for **Blogger API v3**, then click **Enable**.
 3. **Google Auth Platform** (formerly "OAuth consent screen"):
-   * **Branding**: app name `BlogSpace`, your email as the support and developer contact.
+   * **Branding**: app name `ConnectHub`, your email as the support and developer contact.
    * **Audience**: User type **External**. Leave the publishing status as **Testing**.
      Under **Test users**, click **Add users** and add the Google account that owns your blog.
    * **Data access**: **Add or remove scopes**, then add
@@ -59,13 +59,14 @@ Changes can take a few minutes to start working.
   Google account under Settings → Passwords & accounts (or Accounts).
 
 ## 5. Connect in the app
-1. Open BlogSpace, go to the **Publish** tab and select **Blogger — real publishing**.
+1. Open ConnectHub, go to **Upload → Settings** (or **Profile → Publishing account**) and select **Blogger — real publishing**.
 2. Tap **Connect Google account & choose blog**, pick your account, and allow
    "Manage your Blogger account".
 3. Choose your blog from the list. The card now shows "Publishing to: <blog name>".
-4. Open any post and tap **Publish**, or select several posts in **Posts** and tap the upload icon.
-5. The result dialog lists each post with its Blogger URL. Tap **View online** to open it.
-   The post now shows a green **Published** badge.
+4. Open any post and tap **Upload**, select several posts in **Posts** and tap the cloud icon, or tick
+   posts in the **Upload** tab queue and tap **Upload N posts**.
+5. The upload sheet shows a row per post with its Blogger URL, then a success tick. The post now shows a
+   green **Uploaded** badge and **View online** on its detail screen. Drafts are never uploaded.
 
 ## Troubleshooting
 
@@ -82,7 +83,7 @@ Changes can take a few minutes to start working.
 * **Photos:** the Blogger API has no image-upload endpoint. When "Include the post photo" is on,
   the app embeds a reduced JPEG (max 1000 px) directly in the post HTML. If Blogger rejects that,
   the post is re-sent without the photo and the result says "published without it".
-* **Test mode** (Publish tab) rehearses the flow with no account. Its results are always labelled
+* **Test mode** (Upload → Settings) rehearses the flow with no account. Its results are always labelled
   **Simulated**, and posts are never marked as published.
 * **Disconnect** forgets the chosen blog on this device. To revoke Google access completely, visit
   <https://myaccount.google.com/permissions>.

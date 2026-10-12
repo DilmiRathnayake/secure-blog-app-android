@@ -1,4 +1,4 @@
-# BlogSpace — Software Design
+# ConnectHub — Software Design
 
 Diagrams are written in Mermaid. Rendered PNGs are in `docs/diagrams/`.
 
@@ -9,7 +9,7 @@ flowchart LR
     U((Blogger<br/>user))
     G[(Google /<br/>Blogger API)]
     E[[Email / other app]]
-    subgraph BlogSpace app
+    subgraph ConnectHub app
         UC1([Create post])
         UC2([Edit post])
         UC3([View post / list])
@@ -20,8 +20,10 @@ flowchart LR
         UC8([Share post])
         UC9([Publish one / many])
         UC10([Connect Blogger account])
+        UC11([Save draft / filter by status])
+        UC12([Browse photo gallery])
     end
-    U --- UC1 & UC2 & UC3 & UC4 & UC5 & UC6 & UC8 & UC9 & UC10
+    U --- UC1 & UC2 & UC3 & UC4 & UC5 & UC6 & UC8 & UC9 & UC10 & UC11 & UC12
     UC1 -. includes .-> UC7
     UC2 -. includes .-> UC7
     UC8 --- E
@@ -44,6 +46,8 @@ classDiagram
         -String remotePostId
         -String remoteUrl
         -long publishedAt
+        -boolean draft
+        +getStatus() Status
         +hasImage() boolean
         +isPublished() boolean
     }
@@ -55,7 +59,10 @@ classDiagram
         +insert(Post) long
         +update(Post) boolean
         +getById(long) Post
-        +getAll() List~Post~
+        +getAll(PostFilter) List~Post~
+        +getUploadQueue() List~Post~
+        +getWithImages() List~Post~
+        +removeImage(long) boolean
         +search(String) List~Post~
         +delete(long) boolean
         +deleteMany(ids) int
@@ -80,12 +87,15 @@ classDiagram
     class TokenProvider { <<interface>> }
     class PublishSettings
 
+    class PostFilter { <<enum>> NEWEST OLDEST UPLOADED OFFLINE DRAFT }
     class MainActivity
     class HomeFragment
     class PostsFragment
-    class SearchFragment
-    class PublishFragment
-    class AboutFragment
+    class UploadFragment
+    class GalleryFragment
+    class ProfileFragment
+    class SearchActivity
+    class ShareSheet
     class PostDetailActivity
     class EditPostActivity
     class PostAdapter
@@ -97,18 +107,23 @@ classDiagram
     MainActivity *-- PublishController
     MainActivity o-- HomeFragment
     MainActivity o-- PostsFragment
-    MainActivity o-- SearchFragment
-    MainActivity o-- PublishFragment
-    MainActivity o-- AboutFragment
+    MainActivity o-- UploadFragment
+    MainActivity o-- GalleryFragment
+    MainActivity o-- ProfileFragment
     PostsFragment --> PostAdapter
-    SearchFragment --> PostAdapter
+    UploadFragment --> PostAdapter
+    SearchActivity --> PostAdapter
+    PostsFragment ..> PostFilter
+    UploadFragment ..> PublishController
+    GalleryFragment ..> PostRepository
+    PostDetailActivity ..> ShareSheet
+    ShareSheet ..> ShareHelper
     HomeFragment --> PostAdapter
     PostsFragment ..> PostRepository
-    SearchFragment ..> PostRepository
+    SearchActivity ..> PostRepository
     EditPostActivity ..> PostRepository
     EditPostActivity ..> PostValidator
     EditPostActivity ..> ImageStorage
-    PostDetailActivity ..> ShareHelper
     PostDetailActivity *-- PublishController
     PublishController ..> PublishService
     PublishService <|.. BloggerPublishService
@@ -134,12 +149,16 @@ erDiagram
         TEXT remote_post_id "NULL - Blogger id after confirmed publish"
         TEXT remote_url "NULL"
         INTEGER published_at "NOT NULL DEFAULT 0"
+        INTEGER is_draft "NOT NULL DEFAULT 0 (added in v2)"
     }
 ```
 
 * One table, because a post has exactly one optional photo. Photos are stored as files, not BLOBs.
   This keeps the database small and lets FileProvider share the file directly.
 * `remote_*` and `published_at` record only **confirmed** Blogger publishes.
+* Schema version 2 adds `is_draft`; `onUpgrade` runs `ALTER TABLE … ADD COLUMN` so v1 posts are kept
+  (covered by the `upgradeFromVersion1KeepsExistingPosts` instrumented test).
+* Status shown in the UI: **Draft** (`is_draft = 1`), **Uploaded** (`published_at > 0`), otherwise **Offline**.
 * Search: `title LIKE ? ESCAPE '\' OR content LIKE ? ESCAPE '\'` with a bound `%term%` pattern.
 * Bulk delete runs inside one transaction, and photo files are removed only after the commit.
 
@@ -147,28 +166,32 @@ erDiagram
 
 ```mermaid
 flowchart TD
-    Start([Launch]) --> Home
-    subgraph MainActivity [MainActivity - bottom navigation]
+    Start([Launch]) --> Splash[Splash]
+    Splash -->|first run| Onb[Onboarding x3] --> Prof[Profile setup]
+    Splash --> Main
+    Prof --> Main
+    subgraph Main [MainActivity - bottom navigation]
         Home[Home dashboard]
-        Posts[Posts list]
-        Search[Search]
-        Publish[Publish settings]
-        About[About / Help]
+        Posts[Posts + filter chips]
+        Upload[Upload queue]
+        Gallery[Gallery grid]
+        Profile[Profile & settings]
     end
-    Home -->|New post| Edit
-    Posts -->|FAB New post| Edit
-    Home & Posts & Search -->|tap post| Detail
-    Posts -->|long-press / Select| Sel[Selection mode<br/>select all · clear · delete · publish]
-    Sel -->|Delete + confirm| Posts
-    Sel -->|Publish| PubFlow
-    Detail[PostDetailActivity] -->|Edit| Edit[EditPostActivity]
-    Detail -->|Delete + confirm| Posts
-    Detail -->|Share| Share{Any app / Email}
-    Detail -->|Publish| PubFlow[[PublishController]]
-    Edit -->|Gallery| Picker[System Photo Picker]
+    Home & Posts -->|search bar| Search[SearchActivity]
+    Home & Posts -->|FAB| Edit[EditPostActivity]
+    Home & Posts & Search -->|tap card| Detail[PostDetailActivity]
+    Posts -->|swipe right| Edit
+    Posts -->|swipe left| Undo{{Deleted - Undo?}}
+    Posts -->|long-press| Sel[Selection bar: select all, upload, delete]
+    Gallery -->|Camera / Gallery card| Edit
+    Gallery -->|tap photo| Preview[ImagePreviewActivity]
+    Detail -->|Edit| Edit
+    Detail -->|Share| Sheet[ShareSheet]
+    Detail & Upload & Sel -->|Upload| PubFlow[[PublishController + upload sheet]]
+    Upload & Profile -->|Settings| PubSet[PublishSettingsActivity]
+    Profile --> About[AboutActivity]
     Edit -->|Camera| Cam[Camera app via FileProvider]
-    Edit -->|Save| Detail
-    PubFlow -->|not set up| Publish
+    Edit -->|Gallery| Picker[System Photo Picker]
 ```
 
 ## 5. Publish sequence
@@ -213,3 +236,6 @@ sequenceDiagram
 | Background executors for SQLite, images and network | The UI thread never blocks |
 | Blogger via Google AuthorizationClient (OAuth 2.0) | Official API. No secrets in the app, and Google handles the password |
 | Test mode is a separate `PublishService` and never writes "published" | Development rehearsal cannot be mistaken for real publishing |
+| Local profile instead of a login screen | There is no server account system; a fake login would be a non-functional placeholder |
+| Swipe-delete is deferred until the Undo snackbar closes | Undo restores the exact row and photo, without re-inserting a copy |
+| Share-sheet app shortcuts only for installed apps, with their real icons | No dead buttons; every target sends a real ACTION_SEND intent |

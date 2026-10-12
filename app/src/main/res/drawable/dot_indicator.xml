@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Onboarding page dot: wide pill when selected, small dot otherwise. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_selected="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/bs_primary" />
+            <corners android:radius="4dp" />
+            <size android:width="24dp" android:height="8dp" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/bs_outline_variant" />
+            <corners android:radius="4dp" />
+            <size android:width="8dp" android:height="8dp" />
+        </shape>
+    </item>
+</selector>

@@ -1,15 +1,28 @@
-# BlogSpace — offline-first Android blogging app
+# ConnectHub — offline & online social blogging (Android)
 
 6CS027 Secure Mobile Application Development portfolio project.
 Native Android app in **Java** with **XML layouts**, **SQLite** storage, gallery/camera photos,
 Android share intents and publishing to **Blogger**.
 
+| Home | Posts | Editor | Upload | Dark mode |
+|---|---|---|---|---|
+| ![](docs/screenshots/04_home.png) | ![](docs/screenshots/05_posts.png) | ![](docs/screenshots/07_editor.png) | ![](docs/screenshots/11_uploading.png) | ![](docs/screenshots/16_dark_home.png) |
+
+All screenshots in `docs/screenshots/` were captured from the running app on an Android 16 (API 36) emulator.
+
 ## Features
 | Feature | Where |
 |---|---|
-| Create, edit, view and delete posts offline | `ui/EditPostActivity`, `ui/PostDetailActivity`, `data/PostRepository` |
-| List all posts, multi-select, select all / clear, bulk delete | `ui/PostsFragment`, `ui/PostAdapter` |
-| Search titles and bodies (partial, case-insensitive, highlighted) | `ui/SearchFragment`, `PostRepository.search` |
+| Animated splash, 3-page onboarding, local profile (name + photo, no fake login) | `ui/SplashActivity`, `ui/OnboardingActivity`, `ui/ProfileSetupActivity` |
+| Dashboard: greeting, online/offline chip, stats (Total / Offline / Uploaded / Drafts), recent posts | `ui/HomeFragment` |
+| Create, edit, view and delete posts offline; save as **Draft** | `ui/EditPostActivity`, `ui/PostDetailActivity`, `data/PostRepository` |
+| List with filter chips (Newest, Oldest, Uploaded, Offline, Draft), swipe left = delete with Undo, swipe right = edit | `ui/PostsFragment`, `ui/widget/SwipeActions` |
+| Multi-select: checkboxes, select all, clear, bulk delete, bulk upload | `ui/PostsFragment`, `ui/PostAdapter` |
+| Search titles and bodies (partial, case-insensitive, highlighted) + recent searches | `ui/SearchActivity`, `PostRepository.search` |
+| Gallery of all attached photos, full-screen preview, remove photo, camera/gallery shortcuts | `ui/GalleryFragment`, `ui/ImagePreviewActivity` |
+| Share sheet (Email, WhatsApp/Facebook/Messenger when installed, Copy, More) | `ui/ShareSheet`, `util/ShareHelper` |
+| Upload queue + animated progress sheet (ring, per-post status, success animation, Retry) | `ui/UploadFragment`, `publish/PublishController` |
+| Profile: stats, Light/Dark/System theme, publishing account, privacy, about | `ui/ProfileFragment`, `util/AppPrefs` |
 | SQLite database (`SQLiteOpenHelper`) | `data/BlogDbHelper`, `data/PostRepository` |
 | Attach a photo from the gallery (Photo Picker) or camera (FileProvider) | `ui/EditPostActivity`, `util/ImageStorage` |
 | Share a post (text + photo) by email or any app | `util/ShareHelper` |
@@ -60,32 +73,48 @@ This runs the on-device tests. An emulator or phone must be running.
 | `Unsupported class file major version` / JDK errors | Settings → Build Tools → Gradle → Gradle JDK = **jbr-17** or **jbr-21** |
 | "The project is using an incompatible version of the Android Gradle plugin" | You are on an older Studio. Use Narwhal 3/4 (2025.1.3+) |
 | Camera button says "No camera app" on an emulator | In the AVD settings, set Camera → Back to **VirtualScene** or **Emulated** |
+| Emulator shows "System UI isn't responding" | Emulator graphics are slow: AVD settings → Graphics: **Hardware**, or tap *Wait* |
 
 ## Online publishing setup
 See [docs/PUBLISHING_SETUP.md](docs/PUBLISHING_SETUP.md). You do this once per Google account and
 PC. No secrets are stored in the code. Without setup you can still rehearse the flow in **Test mode**
-(Publish tab), which is clearly labelled as simulated.
+(Upload → Settings), which is clearly labelled as simulated.
 
 ## Project structure
 ```
 app/src/main/java/com/blogspace/app/
-  data/      Post, BlogDbHelper (schema), PostRepository (all SQL), PostValidator, SearchQuery
-  ui/        MainActivity + Home/Posts/Search/Publish/About fragments, PostDetailActivity,
-             EditPostActivity, PostAdapter (list + multi-select), Navigation
-  util/      ImageStorage (import/scale/rotate photos), ThumbnailLoader, ShareHelper, ShareText,
-             AppExecutors (background threads), UiUtils (insets, dates, highlight, connectivity)
+  ConnectHubApp     Application: applies saved theme
+  data/      Post, BlogDbHelper (schema v2 + migration), PostRepository (all SQL), PostFilter,
+             PostValidator, SearchQuery
+  ui/        Splash, Onboarding, ProfileSetup, MainActivity + Home/Posts/Upload/Gallery/Profile tabs,
+             SearchActivity, PostDetailActivity, EditPostActivity, ImagePreviewActivity,
+             PublishSettingsActivity (+PublishFragment), AboutActivity (+AboutFragment),
+             ShareSheet, PostAdapter (list + multi-select), Navigation
+  ui/widget/ StatusBadge, SwipeActions, Shimmer (loading skeleton), SettingRowView, SquareFrameLayout
+  util/      ImageStorage (import/scale/rotate photos), ThumbnailLoader, AvatarHelper, ShareHelper,
+             ShareText, AppPrefs, SearchHistory, AppExecutors, UiUtils
   publish/   PublishController (flow + UI), GoogleAuthHelper (OAuth), BloggerApi (REST),
              BloggerPublishService, MockPublishService (Test mode), PublishSettings
-app/src/test/         JVM unit tests (20)
-app/src/androidTest/  Instrumented tests: SQLite, images, share intent, UI (Espresso)
-docs/                 Report, design diagrams, test plan, demo script, publishing setup
+app/src/test/         JVM unit tests (24)
+app/src/androidTest/  Instrumented tests (23): SQLite incl. v1→v2 migration, images, share intent, UI (Espresso)
+docs/                 Design, diagrams, screenshots, publishing setup, licences
 ```
 
 ## Third-party code
 All are official Google/AndroidX libraries, declared in `gradle/libs.versions.toml`:
 AndroidX AppCompat, Activity, Core, RecyclerView, ConstraintLayout, ExifInterface (Apache 2.0);
 Material Components for Android (Apache 2.0); Google Play services Auth (Google APIs ToS);
-Material Design icons (Apache 2.0). Tests use JUnit 4, AndroidX Test, Espresso and org.json.
+AndroidX ViewPager2 (Apache 2.0); Material Design icons (Apache 2.0);
+Inter typeface by Rasmus Andersson (SIL Open Font License 1.1, see `docs/licenses/Inter-OFL.txt`).
+Tests use JUnit 4, AndroidX Test, Espresso and org.json.
+
+## Design system
+* Colours: Indigo `#4F46E5`, Purple `#7C3AED`, Violet `#6366F1`, plus success/warning/error status colours
+  (`res/values/colors.xml`, dark variants in `values-night/`).
+* Typography: Inter (Regular/Medium/SemiBold/Bold) mapped onto the Material 3 type scale (`themes.xml`).
+* Shapes: 12 / 16 / 20 / 28 dp corners; 8 pt spacing grid (`dimens.xml`).
+* Components: gradient hero headers, glass chips, elevated cards with press-scale animation,
+  status badges, skeleton loaders, rounded bottom sheets and dialogs, extended FAB that shrinks on scroll.
 
 ## Making the submission ZIP
 Before zipping, delete the build outputs, or run **Build → Clean Project**:

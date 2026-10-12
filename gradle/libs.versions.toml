@@ -9,6 +9,7 @@ constraintlayout = "2.2.1"
 activity = "1.10.1"
 core = "1.16.0"
 exifinterface = "1.4.1"
+viewpager2 = "1.1.0"
 playServicesAuth = "21.4.0"
 junit = "4.13.2"
 orgJson = "20240303"
@@ -24,6 +25,7 @@ constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayo
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 core = { group = "androidx.core", name = "core", version.ref = "core" }
 exifinterface = { group = "androidx.exifinterface", name = "exifinterface", version.ref = "exifinterface" }
+viewpager2 = { group = "androidx.viewpager2", name = "viewpager2", version.ref = "viewpager2" }
 play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "playServicesAuth" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 org-json = { group = "org.json", name = "json", version.ref = "orgJson" }

@@ -21,6 +21,7 @@ import static com.blogspace.app.data.BlogDbHelper.COL_CONTENT;
 import static com.blogspace.app.data.BlogDbHelper.COL_CREATED_AT;
 import static com.blogspace.app.data.BlogDbHelper.COL_ID;
 import static com.blogspace.app.data.BlogDbHelper.COL_IMAGE_FILE;
+import static com.blogspace.app.data.BlogDbHelper.COL_IS_DRAFT;
 import static com.blogspace.app.data.BlogDbHelper.COL_PUBLISHED_AT;
 import static com.blogspace.app.data.BlogDbHelper.COL_REMOTE_POST_ID;
 import static com.blogspace.app.data.BlogDbHelper.COL_REMOTE_URL;
@@ -39,7 +40,7 @@ public class PostRepository {
 
     private static final String[] ALL_COLUMNS = {
             COL_ID, COL_TITLE, COL_CONTENT, COL_IMAGE_FILE, COL_CREATED_AT,
-            COL_UPDATED_AT, COL_REMOTE_POST_ID, COL_REMOTE_URL, COL_PUBLISHED_AT
+            COL_UPDATED_AT, COL_REMOTE_POST_ID, COL_REMOTE_URL, COL_PUBLISHED_AT, COL_IS_DRAFT
     };
     /** Newest edits first; id breaks ties so the order is always stable. */
     private static final String DEFAULT_ORDER = COL_UPDATED_AT + " DESC, " + COL_ID + " DESC";
@@ -49,16 +50,20 @@ public class PostRepository {
     private final Context appContext;
     private final BlogDbHelper dbHelper;
 
-    /** Simple counts shown on the Home screen. */
+    /** Counts shown on the Home and Profile screens. */
     public static class Stats {
         public final int total;
         public final int withImages;
         public final int published;
+        public final int offline;
+        public final int drafts;
 
-        Stats(int total, int withImages, int published) {
+        Stats(int total, int withImages, int published, int offline, int drafts) {
             this.total = total;
             this.withImages = withImages;
             this.published = published;
+            this.offline = offline;
+            this.drafts = drafts;
         }
     }
 
@@ -151,6 +156,7 @@ public class PostRepository {
             values.putNull(COL_IMAGE_FILE);
         }
         values.put(COL_UPDATED_AT, post.getUpdatedAt());
+        values.put(COL_IS_DRAFT, post.isDraft() ? 1 : 0);
         return values;
     }
 
@@ -169,6 +175,43 @@ public class PostRepository {
     @NonNull
     public List<Post> getAll() {
         return query(null, null, null);
+    }
+
+    /** Posts matching a filter chip (Newest, Oldest, Uploaded, Offline, Draft). */
+    @WorkerThread
+    @NonNull
+    public List<Post> getAll(@NonNull PostFilter filter) {
+        return query(filter.selection, null, filter.orderBy, null);
+    }
+
+    /** Posts that have a photo, newest first (Gallery screen). */
+    @WorkerThread
+    @NonNull
+    public List<Post> getWithImages() {
+        return query(COL_IMAGE_FILE + " IS NOT NULL", null, null);
+    }
+
+    /** Finished posts that have not been uploaded yet (Upload screen queue). */
+    @WorkerThread
+    @NonNull
+    public List<Post> getUploadQueue() {
+        return getAll(PostFilter.OFFLINE);
+    }
+
+    /** Detaches the photo from a post and deletes the file. */
+    @WorkerThread
+    public boolean removeImage(long id) {
+        Post post = getById(id);
+        if (post == null || !post.hasImage()) {
+            return false;
+        }
+        String name = post.getImageFileName();
+        post.setImageFileName(null);
+        if (!update(post)) {
+            return false;
+        }
+        ImageStorage.deleteImage(appContext, name);
+        return true;
     }
 
     @WorkerThread
@@ -224,19 +267,26 @@ public class PostRepository {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String sql = "SELECT COUNT(*), "
                 + "SUM(CASE WHEN " + COL_IMAGE_FILE + " IS NOT NULL THEN 1 ELSE 0 END), "
-                + "SUM(CASE WHEN " + COL_PUBLISHED_AT + " > 0 THEN 1 ELSE 0 END) FROM " + TABLE_POSTS;
+                + "SUM(CASE WHEN " + COL_PUBLISHED_AT + " > 0 AND " + COL_IS_DRAFT + " = 0 THEN 1 ELSE 0 END), "
+                + "SUM(CASE WHEN " + COL_PUBLISHED_AT + " = 0 AND " + COL_IS_DRAFT + " = 0 THEN 1 ELSE 0 END), "
+                + "SUM(CASE WHEN " + COL_IS_DRAFT + " = 1 THEN 1 ELSE 0 END) FROM " + TABLE_POSTS;
         try (Cursor c = db.rawQuery(sql, null)) {
             if (c.moveToFirst()) {
-                return new Stats(c.getInt(0), c.getInt(1), c.getInt(2));
+                return new Stats(c.getInt(0), c.getInt(1), c.getInt(2), c.getInt(3), c.getInt(4));
             }
         }
-        return new Stats(0, 0, 0);
+        return new Stats(0, 0, 0, 0, 0);
     }
 
     private List<Post> query(@Nullable String selection, @Nullable String[] args, @Nullable String limit) {
+        return query(selection, args, DEFAULT_ORDER, limit);
+    }
+
+    private List<Post> query(@Nullable String selection, @Nullable String[] args,
+                             @NonNull String orderBy, @Nullable String limit) {
         List<Post> result = new ArrayList<>();
         try (Cursor c = dbHelper.getReadableDatabase().query(TABLE_POSTS, ALL_COLUMNS,
-                selection, args, null, null, DEFAULT_ORDER, limit)) {
+                selection, args, null, null, orderBy, limit)) {
             while (c.moveToNext()) {
                 result.add(fromCursor(c));
             }
@@ -255,6 +305,7 @@ public class PostRepository {
         p.setRemotePostId(c.getString(c.getColumnIndexOrThrow(COL_REMOTE_POST_ID)));
         p.setRemoteUrl(c.getString(c.getColumnIndexOrThrow(COL_REMOTE_URL)));
         p.setPublishedAt(c.getLong(c.getColumnIndexOrThrow(COL_PUBLISHED_AT)));
+        p.setDraft(c.getInt(c.getColumnIndexOrThrow(COL_IS_DRAFT)) == 1);
         return p;
     }
 

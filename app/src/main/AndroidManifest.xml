@@ -16,7 +16,22 @@
         android:name="android.hardware.camera"
         android:required="false" />
 
+    <!--
+        Package visibility (Android 11+): the share sheet shows WhatsApp / Facebook / Messenger
+        shortcuts only when those apps are installed, so we must be allowed to see them.
+    -->
+    <queries>
+        <package android:name="com.whatsapp" />
+        <package android:name="com.facebook.katana" />
+        <package android:name="com.facebook.orca" />
+        <intent>
+            <action android:name="android.intent.action.SENDTO" />
+            <data android:scheme="mailto" />
+        </intent>
+    </queries>
+
     <application
+        android:name=".ConnectHubApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -27,14 +42,40 @@
         android:theme="@style/Theme.BlogSpace"
         tools:targetApi="36">
 
+        <!-- Launcher: animated splash, then onboarding / profile setup on first run. -->
         <activity
-            android:name=".ui.MainActivity"
-            android:exported="true">
+            android:name=".ui.SplashActivity"
+            android:exported="true"
+            android:theme="@style/Theme.BlogSpace.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".ui.OnboardingActivity" android:exported="false" />
+        <activity
+            android:name=".ui.ProfileSetupActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".ui.MainActivity" android:exported="false" />
+        <activity
+            android:name=".ui.SearchActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.MainActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".ui.ImagePreviewActivity"
+            android:exported="false"
+            android:theme="@style/Theme.BlogSpace.Immersive" />
+        <activity
+            android:name=".ui.PublishSettingsActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.MainActivity" />
+        <activity
+            android:name=".ui.AboutActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.MainActivity" />
 
         <activity
             android:name=".ui.PostDetailActivity"

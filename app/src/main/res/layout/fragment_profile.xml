@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Profile: avatar header, statistics, settings list. -->
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/space_xl">
+
+        <LinearLayout
+            android:id="@+id/hero"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_hero"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/space_xl"
+            android:paddingBottom="56dp">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/avatar"
+                android:layout_width="@dimen/avatar_l"
+                android:layout_height="@dimen/avatar_l"
+                android:background="@android:color/white"
+                android:contentDescription="@string/cd_avatar"
+                android:scaleType="centerCrop"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.CH.Circle"
+                app:strokeColor="@color/glass_stroke"
+                app:strokeWidth="3dp" />
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space_m"
+                android:textAppearance="?attr/textAppearanceHeadlineSmall"
+                android:textColor="@color/on_gradient" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_edit_profile"
+                style="@style/Widget.CH.Button.Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_glass"
+                android:minHeight="40dp"
+                android:paddingHorizontal="@dimen/space_l"
+                android:text="@string/profile_edit"
+                android:textColor="@color/on_gradient"
+                app:backgroundTint="@null"
+                app:icon="@drawable/ic_edit"
+                app:iconTint="@color/on_gradient" />
+        </LinearLayout>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/screen_padding"
+            android:layout_marginTop="-36dp"
+            app:cardElevation="6dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:paddingVertical="@dimen/space_l">
+
+                <LinearLayout style="@style/CH.ProfileStat">
+                    <TextView android:id="@+id/stat_total" style="@style/CH.ProfileStatValue" />
+                    <TextView style="@style/CH.ProfileStatLabel" android:text="@string/stat_total" />
+                </LinearLayout>
+
+                <LinearLayout style="@style/CH.ProfileStat">
+                    <TextView android:id="@+id/stat_uploaded" style="@style/CH.ProfileStatValue" />
+                    <TextView style="@style/CH.ProfileStatLabel" android:text="@string/stat_uploaded" />
+                </LinearLayout>
+
+                <LinearLayout style="@style/CH.ProfileStat">
+                    <TextView android:id="@+id/stat_offline" style="@style/CH.ProfileStatValue" />
+                    <TextView style="@style/CH.ProfileStatLabel" android:text="@string/stat_offline" />
+                </LinearLayout>
+
+                <LinearLayout style="@style/CH.ProfileStat">
+                    <TextView android:id="@+id/stat_drafts" style="@style/CH.ProfileStatValue" />
+                    <TextView style="@style/CH.ProfileStatLabel" android:text="@string/stat_drafts" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/screen_padding"
+            android:layout_marginTop="@dimen/space_xl"
+            android:layout_marginBottom="@dimen/space_s"
+            android:accessibilityHeading="true"
+            android:text="@string/settings_title"
+            android:textAppearance="?attr/textAppearanceTitleMedium" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/screen_padding"
+            app:cardElevation="0dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.blogspace.app.ui.widget.SettingRowView
+                    android:id="@+id/row_dark_mode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:rowIcon="@drawable/ic_dark_mode"
+                    app:rowTint="@color/brand_indigo"
+                    app:rowTitle="@string/setting_dark_mode" />
+
+                <com.blogspace.app.ui.widget.SettingRowView
+                    android:id="@+id/row_theme"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:rowIcon="@drawable/ic_palette"
+                    app:rowTint="@color/brand_purple"
+                    app:rowTitle="@string/setting_theme" />
+
+                <com.blogspace.app.ui.widget.SettingRowView
+                    android:id="@+id/row_publishing"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:rowIcon="@drawable/ic_cloud_upload"
+                    app:rowTint="@color/status_success"
+                    app:rowTitle="@string/setting_publishing" />
+
+                <com.blogspace.app.ui.widget.SettingRowView
+                    android:id="@+id/row_privacy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:rowIcon="@drawable/ic_shield"
+                    app:rowTint="@color/status_warning"
+                    app:rowTitle="@string/setting_privacy" />
+
+                <com.blogspace.app.ui.widget.SettingRowView
+                    android:id="@+id/row_onboarding"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:rowIcon="@drawable/ic_sparkle"
+                    app:rowTint="@color/brand_violet"
+                    app:rowTitle="@string/setting_onboarding" />
+
+                <com.blogspace.app.ui.widget.SettingRowView
+                    android:id="@+id/row_about"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:rowIcon="@drawable/ic_info"
+                    app:rowTint="@color/bs_on_surface_variant"
+                    app:rowTitle="@string/setting_about" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/version"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_l"
+            android:gravity="center"
+            android:textAppearance="?attr/textAppearanceLabelSmall"
+            android:textColor="?attr/colorOutline" />
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

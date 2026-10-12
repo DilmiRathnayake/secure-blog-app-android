@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- One row in a post list. The checkbox is only visible in selection mode. -->
+<!-- Post card: thumbnail, title, preview, date and status badge. Checkbox shows in selection mode. -->
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card"
@@ -14,9 +14,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:minHeight="88dp"
+        android:minHeight="104dp"
         android:orientation="horizontal"
-        android:padding="@dimen/space_m">
+        android:padding="14dp">
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/checkbox"
@@ -27,15 +27,16 @@
             android:focusable="false"
             android:visibility="gone" />
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/thumbnail"
             android:layout_width="@dimen/thumb_size"
             android:layout_height="@dimen/thumb_size"
-            android:layout_marginEnd="@dimen/space_m"
-            android:background="@drawable/bg_thumb"
+            android:layout_marginEnd="14dp"
+            android:background="?attr/colorSurfaceContainerHigh"
             android:contentDescription="@string/cd_post_thumbnail"
             android:scaleType="centerCrop"
-            android:visibility="gone" />
+            android:visibility="gone"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.CH.Thumb" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -49,15 +50,15 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:textAppearance="?attr/textAppearanceTitleMedium"
-                android:textStyle="bold" />
+                android:textAppearance="?attr/textAppearanceTitleMedium" />
 
             <TextView
                 android:id="@+id/preview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="4dp"
                 android:ellipsize="end"
+                android:lineSpacingExtra="2dp"
                 android:maxLines="2"
                 android:textAppearance="?attr/textAppearanceBodyMedium"
                 android:textColor="?attr/colorOnSurfaceVariant" />
@@ -65,7 +66,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="10dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -74,21 +75,21 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:maxLines="1"
                     android:textAppearance="?attr/textAppearanceLabelMedium"
                     android:textColor="?attr/colorOutline" />
 
                 <TextView
-                    android:id="@+id/published_badge"
+                    android:id="@+id/status_badge"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawablePadding="4dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/bg_badge"
+                    android:drawablePadding="5dp"
                     android:gravity="center_vertical"
-                    android:text="@string/label_published"
-                    android:textAppearance="?attr/textAppearanceLabelMedium"
-                    android:textColor="@color/bs_success"
-                    android:visibility="gone"
-                    app:drawableStartCompat="@drawable/ic_cloud_upload"
-                    app:drawableTint="@color/bs_success" />
+                    android:paddingHorizontal="10dp"
+                    android:textAppearance="@style/TextAppearance.CH.Badge"
+                    app:drawableStartCompat="@drawable/bg_dot" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

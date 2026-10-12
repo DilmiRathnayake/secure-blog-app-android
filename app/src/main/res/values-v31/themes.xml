@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Android 12+ always shows a system splash first; make it match our gradient splash. -->
+    <style name="Theme.BlogSpace.Splash">
+        <item name="android:windowBackground">@drawable/bg_gradient_primary</item>
+        <item name="android:windowAnimationStyle">@style/Animation.CH.Fade</item>
+        <item name="android:windowSplashScreenBackground">@color/brand_indigo</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+    </style>
+</resources>

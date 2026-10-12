@@ -21,13 +21,14 @@ import androidx.annotation.Nullable;
  *  remote_post_id TEXT    NULL      -- Blogger post id after a confirmed publish
  *  remote_url     TEXT    NULL      -- public Blogger URL after a confirmed publish
  *  published_at   INTEGER NOT NULL DEFAULT 0
+ *  is_draft       INTEGER NOT NULL DEFAULT 0  -- added in version 2
  * </pre>
  */
 public class BlogDbHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "blogspace.db";
     /** Increase this and add a step in {@link #onUpgrade} whenever the schema changes. */
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
 
     public static final String TABLE_POSTS = "posts";
     public static final String COL_ID = "_id";
@@ -39,6 +40,7 @@ public class BlogDbHelper extends SQLiteOpenHelper {
     public static final String COL_REMOTE_POST_ID = "remote_post_id";
     public static final String COL_REMOTE_URL = "remote_url";
     public static final String COL_PUBLISHED_AT = "published_at";
+    public static final String COL_IS_DRAFT = "is_draft";
 
     private static final String SQL_CREATE_POSTS =
             "CREATE TABLE " + TABLE_POSTS + " ("
@@ -50,7 +52,8 @@ public class BlogDbHelper extends SQLiteOpenHelper {
                     + COL_UPDATED_AT + " INTEGER NOT NULL, "
                     + COL_REMOTE_POST_ID + " TEXT, "
                     + COL_REMOTE_URL + " TEXT, "
-                    + COL_PUBLISHED_AT + " INTEGER NOT NULL DEFAULT 0)";
+                    + COL_PUBLISHED_AT + " INTEGER NOT NULL DEFAULT 0, "
+                    + COL_IS_DRAFT + " INTEGER NOT NULL DEFAULT 0)";
 
     /** Lists are always sorted newest-edited first, so index that column. */
     private static final String SQL_CREATE_UPDATED_INDEX =
@@ -74,14 +77,17 @@ public class BlogDbHelper extends SQLiteOpenHelper {
 
     /**
      * Migrates step by step from {@code oldVersion} so that users never lose posts.
-     * Each future schema version adds one {@code case} that ALTERs the table; existing rows are
-     * never dropped. (Version 1 is the first release, so there are no steps yet.)
+     * Each schema version adds one step that ALTERs the table; existing rows are never dropped.
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         int version = oldVersion;
-        // Example for a future version 2:
-        // if (version < 2) { db.execSQL("ALTER TABLE posts ADD COLUMN tags TEXT"); version = 2; }
+        if (version < 2) {
+            // v2: drafts. Existing posts become normal (non-draft) posts.
+            db.execSQL("ALTER TABLE " + TABLE_POSTS + " ADD COLUMN " + COL_IS_DRAFT
+                    + " INTEGER NOT NULL DEFAULT 0");
+            version = 2;
+        }
         if (version != newVersion) {
             throw new IllegalStateException(
                     "No migration path from database version " + oldVersion + " to " + newVersion);

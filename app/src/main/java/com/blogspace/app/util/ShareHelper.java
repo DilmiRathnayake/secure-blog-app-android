@@ -58,6 +58,36 @@ public final class ShareHelper {
         }
     }
 
+    /**
+     * Shares straight to one installed app (e.g. WhatsApp) using the same ACTION_SEND intent,
+     * limited to that package. Falls back to the share sheet if the app cannot receive it.
+     */
+    public static void shareToPackage(@NonNull Activity activity, @NonNull Post post, @NonNull String packageName) {
+        Intent send = buildSendIntent(activity, post);
+        send.setPackage(packageName);
+        try {
+            activity.startActivity(send);
+        } catch (ActivityNotFoundException e) {
+            shareWithChooser(activity, post);
+        }
+    }
+
+    /** Copies the post (or its public URL when uploaded) to the clipboard. */
+    public static void copyToClipboard(@NonNull Context context, @NonNull Post post) {
+        android.content.ClipboardManager cm = androidx.core.content.ContextCompat.getSystemService(
+                context, android.content.ClipboardManager.class);
+        if (cm == null) {
+            return;
+        }
+        String text = post.getRemoteUrl() != null ? post.getRemoteUrl()
+                : ShareText.build(post.getTitle(), post.getContent(), "");
+        cm.setPrimaryClip(ClipData.newPlainText(post.getTitle(), text));
+        // Android 13+ shows its own "copied" confirmation; older versions need ours.
+        if (android.os.Build.VERSION.SDK_INT < 33) {
+            Toast.makeText(context, R.string.copied_to_clipboard, Toast.LENGTH_SHORT).show();
+        }
+    }
+
     /** Builds the ACTION_SEND intent with subject, text and (if available) the photo. */
     @NonNull
     static Intent buildSendIntent(@NonNull Context context, @NonNull Post post) {

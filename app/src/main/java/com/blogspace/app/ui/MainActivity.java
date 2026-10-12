@@ -13,12 +13,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.blogspace.app.R;
+import com.blogspace.app.data.PostFilter;
 import com.blogspace.app.databinding.ActivityMainBinding;
 import com.blogspace.app.publish.PublishController;
-import com.blogspace.app.util.UiUtils;
 
 /**
- * Main screen: hosts the five tabs (Home, Posts, Search, Publish, About) with a bottom
+ * Main screen: hosts the five tabs (Home, Posts, Upload, Gallery, Profile) with a bottom
  * navigation bar, and owns the shared {@link PublishController}.
  */
 public class MainActivity extends AppCompatActivity implements PublishController.Host {
@@ -29,17 +29,20 @@ public class MainActivity extends AppCompatActivity implements PublishController
     private ActivityMainBinding binding;
     private PublishController publishController;
     private OnBackPressedCallback backToHome;
+    /** Filter to apply when the Posts tab is next created (from a Home statistic card). */
+    @Nullable
+    private PostFilter pendingPostsFilter;
 
-    /** Fragments call this when something can't be refreshed by them alone. */
+    /** Tabs implement this so they can be refreshed after publishing. */
     public interface Refreshable {
         void refresh();
     }
 
-    /** Intent that brings MainActivity to the front on the Publish tab. */
+    /** Intent that brings MainActivity to the front on a given tab. */
     @NonNull
-    public static Intent publishSettingsIntent(@NonNull Context context) {
+    public static Intent tabIntent(@NonNull Context context, @IdRes int tab) {
         return new Intent(context, MainActivity.class)
-                .putExtra(EXTRA_OPEN_TAB, R.id.nav_publish)
+                .putExtra(EXTRA_OPEN_TAB, tab)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
     }
 
@@ -49,8 +52,6 @@ public class MainActivity extends AppCompatActivity implements PublishController
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        UiUtils.applySystemBarInsets(binding.getRoot(), false);
-        setSupportActionBar(binding.toolbar);
 
         // Must be created before the Activity is STARTED (it registers an activity-result launcher).
         publishController = new PublishController(this, this);
@@ -59,8 +60,8 @@ public class MainActivity extends AppCompatActivity implements PublishController
             showTab(item.getItemId());
             return true;
         });
-        // Re-selecting the current tab does nothing (avoids recreating the fragment).
-        binding.bottomNav.setOnItemReselectedListener(item -> { });
+        // Re-selecting the current tab scrolls/refreshes rather than recreating it.
+        binding.bottomNav.setOnItemReselectedListener(item -> onPublishFinished());
 
         backToHome = new OnBackPressedCallback(false) {
             @Override
@@ -83,8 +84,7 @@ public class MainActivity extends AppCompatActivity implements PublishController
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        // After rotation the FragmentManager restores the fragment; just restore title/back state.
-        updateChrome(binding.bottomNav.getSelectedItemId());
+        backToHome.setEnabled(binding.bottomNav.getSelectedItemId() != R.id.nav_home);
     }
 
     @Override
@@ -99,42 +99,41 @@ public class MainActivity extends AppCompatActivity implements PublishController
     private void showTab(@IdRes int itemId) {
         getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
+                .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
                 .replace(R.id.fragment_container, createFragment(itemId))
                 .commit();
-        updateChrome(itemId);
-    }
-
-    private void updateChrome(@IdRes int itemId) {
-        setTitle(titleFor(itemId));
         backToHome.setEnabled(itemId != R.id.nav_home);
     }
 
     @NonNull
-    private static Fragment createFragment(@IdRes int itemId) {
+    private Fragment createFragment(@IdRes int itemId) {
         if (itemId == R.id.nav_posts) {
-            return new PostsFragment();
-        } else if (itemId == R.id.nav_search) {
-            return new SearchFragment();
-        } else if (itemId == R.id.nav_publish) {
-            return new PublishFragment();
-        } else if (itemId == R.id.nav_about) {
-            return new AboutFragment();
+            PostsFragment posts = new PostsFragment();
+            if (pendingPostsFilter != null) {
+                Bundle args = new Bundle();
+                args.putString(PostsFragment.ARG_FILTER, pendingPostsFilter.name());
+                posts.setArguments(args);
+                pendingPostsFilter = null;
+            }
+            return posts;
+        } else if (itemId == R.id.nav_upload) {
+            return new UploadFragment();
+        } else if (itemId == R.id.nav_gallery) {
+            return new GalleryFragment();
+        } else if (itemId == R.id.nav_profile) {
+            return new ProfileFragment();
         }
         return new HomeFragment();
     }
 
-    @NonNull
-    private CharSequence titleFor(@IdRes int itemId) {
-        if (itemId == R.id.nav_posts) {
-            return getString(R.string.nav_posts);
-        } else if (itemId == R.id.nav_search) {
-            return getString(R.string.nav_search);
-        } else if (itemId == R.id.nav_publish) {
-            return getString(R.string.publish_title);
-        } else if (itemId == R.id.nav_about) {
-            return getString(R.string.nav_about);
+    /** Opens the Posts tab with a filter chip pre-selected (Home statistic cards). */
+    public void openPosts(@NonNull PostFilter filter) {
+        pendingPostsFilter = filter;
+        if (binding.bottomNav.getSelectedItemId() == R.id.nav_posts) {
+            showTab(R.id.nav_posts);
+        } else {
+            binding.bottomNav.setSelectedItemId(R.id.nav_posts);
         }
-        return getString(R.string.app_name);
     }
 
     /** Switches tab programmatically (e.g. Home's "View all" button). */
@@ -159,6 +158,6 @@ public class MainActivity extends AppCompatActivity implements PublishController
 
     @Override
     public void openPublishSettings() {
-        selectTab(R.id.nav_publish);
+        startActivity(new Intent(this, PublishSettingsActivity.class));
     }
 }

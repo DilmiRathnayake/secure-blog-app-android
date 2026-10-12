@@ -30,6 +30,11 @@ public final class PostValidator {
         return t.length() > MAX_TITLE_LENGTH ? Result.TITLE_TOO_LONG : Result.OK;
     }
 
+    /** A draft only needs something in it: a title or some text. */
+    public static boolean isValidDraft(@Nullable String title, @Nullable String content) {
+        return (title != null && !title.trim().isEmpty()) || (content != null && !content.trim().isEmpty());
+    }
+
     public static Result validateContent(@Nullable String content) {
         String c = content == null ? "" : content.trim();
         if (c.isEmpty()) {

@@ -39,6 +39,8 @@ public class CreatePostUiTest {
             onView(withId(R.id.btn_save)).perform(click());
             onView(withId(R.id.title_layout))
                     .check(matches(hasDescendant(withText(R.string.error_title_required))));
+            onView(withId(R.id.content_layout))
+                    .check(matches(hasDescendant(withText(R.string.error_content_required))));
 
             onView(withId(R.id.title_input)).perform(typeText(title), closeSoftKeyboard());
             onView(withId(R.id.content_input)).perform(typeText("Written by Espresso"), closeSoftKeyboard());
@@ -53,11 +55,17 @@ public class CreatePostUiTest {
     }
 
     @Test
-    public void mainScreenShowsBottomNavigation() {
+    public void mainScreenTabsOpen() {
         try (ActivityScenario<MainActivity> ignored = ActivityScenario.launch(MainActivity.class)) {
             onView(withId(R.id.bottom_nav)).check(matches(isDisplayed()));
             onView(withId(R.id.nav_posts)).perform(click());
-            onView(withId(R.id.fab_new)).check(matches(isDisplayed()));
+            onView(withId(R.id.filter_group)).check(matches(isDisplayed()));
+            onView(withId(R.id.nav_upload)).perform(click());
+            onView(withId(R.id.btn_settings)).check(matches(isDisplayed()));
+            onView(withId(R.id.nav_gallery)).perform(click());
+            onView(withId(R.id.card_camera)).check(matches(isDisplayed()));
+            onView(withId(R.id.nav_profile)).perform(click());
+            onView(withId(R.id.row_theme)).check(matches(isDisplayed()));
         }
     }
 }

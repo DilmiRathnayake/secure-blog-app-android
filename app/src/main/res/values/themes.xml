@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- One DayNight theme; colours switch automatically via values-night/colors.xml. -->
+    <!--
+        ConnectHub design system.
+        One DayNight theme; colours switch automatically via values-night/colors.xml.
+        Typography: Inter. Shapes: 12 / 16 / 20 / 28dp corners. Spacing: 8pt grid (dimens.xml).
+    -->
     <style name="Theme.BlogSpace" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/bs_primary</item>
         <item name="colorOnPrimary">@color/bs_on_primary</item>
@@ -31,34 +35,295 @@
         <item name="colorSurfaceContainerHighest">@color/bs_surface_container_highest</item>
         <item name="colorOutline">@color/bs_outline</item>
         <item name="colorOutlineVariant">@color/bs_outline_variant</item>
-        <!-- Contextual action bar (multi-select) draws over the toolbar instead of pushing it down. -->
-        <item name="windowActionModeOverlay">true</item>
-        <item name="actionModeBackground">@color/bs_primary_container</item>
-        <item name="materialCardViewStyle">@style/Widget.BlogSpace.Card</item>
+
+        <!-- Typography: every text style below sets its own Inter weight. -->
+        <item name="editTextStyle">@style/Widget.CH.EditText</item>
+        <item name="textAppearanceDisplaySmall">@style/TextAppearance.CH.DisplaySmall</item>
+        <item name="textAppearanceHeadlineLarge">@style/TextAppearance.CH.HeadlineLarge</item>
+        <item name="textAppearanceHeadlineMedium">@style/TextAppearance.CH.HeadlineMedium</item>
+        <item name="textAppearanceHeadlineSmall">@style/TextAppearance.CH.HeadlineSmall</item>
+        <item name="textAppearanceTitleLarge">@style/TextAppearance.CH.TitleLarge</item>
+        <item name="textAppearanceTitleMedium">@style/TextAppearance.CH.TitleMedium</item>
+        <item name="textAppearanceTitleSmall">@style/TextAppearance.CH.TitleSmall</item>
+        <item name="textAppearanceBodyLarge">@style/TextAppearance.CH.BodyLarge</item>
+        <item name="textAppearanceBodyMedium">@style/TextAppearance.CH.BodyMedium</item>
+        <item name="textAppearanceBodySmall">@style/TextAppearance.CH.BodySmall</item>
+        <item name="textAppearanceLabelLarge">@style/TextAppearance.CH.LabelLarge</item>
+        <item name="textAppearanceLabelMedium">@style/TextAppearance.CH.LabelMedium</item>
+        <item name="textAppearanceLabelSmall">@style/TextAppearance.CH.LabelSmall</item>
+
+        <!-- Shapes -->
+        <item name="shapeAppearanceCornerSmall">@style/ShapeAppearance.CH.Small</item>
+        <item name="shapeAppearanceCornerMedium">@style/ShapeAppearance.CH.Medium</item>
+        <item name="shapeAppearanceCornerLarge">@style/ShapeAppearance.CH.Large</item>
+        <item name="shapeAppearanceCornerExtraLarge">@style/ShapeAppearance.CH.ExtraLarge</item>
+
+        <!-- Components -->
+        <!-- Keep elevated cards / nav bar pure white (no lavender elevation tint). -->
+        <item name="elevationOverlayEnabled">false</item>
+        <item name="materialCardViewStyle">@style/Widget.CH.Card</item>
+        <item name="materialButtonStyle">@style/Widget.CH.Button</item>
+        <item name="chipStyle">@style/Widget.CH.Chip.Filter</item>
+        <item name="bottomNavigationStyle">@style/Widget.CH.BottomNavigation</item>
+        <item name="extendedFloatingActionButtonStyle">@style/Widget.CH.ExtendedFab</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.CH.Dialog</item>
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.CH.BottomSheet</item>
+        <item name="snackbarStyle">@style/Widget.CH.Snackbar</item>
+        <item name="android:windowAnimationStyle">@style/Animation.CH.Activity</item>
     </style>
 
-    <style name="Widget.BlogSpace.Card" parent="Widget.Material3.CardView.Filled">
-        <item name="cardBackgroundColor">@color/bs_surface_container_lowest</item>
-        <item name="cardCornerRadius">@dimen/card_radius</item>
-        <item name="strokeWidth">1dp</item>
-        <item name="strokeColor">@color/bs_outline_variant</item>
+    <!-- Launch screen: gradient behind the logo while the splash animates. -->
+    <style name="Theme.BlogSpace.Splash">
+        <item name="android:windowBackground">@drawable/bg_gradient_primary</item>
+        <item name="android:windowAnimationStyle">@style/Animation.CH.Fade</item>
     </style>
 
-    <style name="Widget.BlogSpace.Toolbar" parent="Widget.Material3.Toolbar.Surface">
-        <item name="titleTextAppearance">@style/TextAppearance.BlogSpace.ToolbarTitle</item>
+    <!-- Full-screen image preview. -->
+    <style name="Theme.BlogSpace.Immersive">
+        <item name="android:windowBackground">@android:color/black</item>
     </style>
 
-    <style name="TextAppearance.BlogSpace.ToolbarTitle" parent="TextAppearance.Material3.TitleLarge">
-        <item name="android:textStyle">bold</item>
+    <!-- Page transitions -->
+    <style name="Animation.CH.Activity" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_in_right</item>
+        <item name="android:activityOpenExitAnimation">@anim/slide_out_left</item>
+        <item name="android:activityCloseEnterAnimation">@anim/slide_in_left</item>
+        <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
     </style>
 
-    <style name="TextAppearance.BlogSpace.SectionHeader" parent="TextAppearance.Material3.TitleMedium">
-        <item name="android:textStyle">bold</item>
+    <style name="Animation.CH.Fade" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/fade_in</item>
+        <item name="android:activityOpenExitAnimation">@anim/fade_out</item>
+        <item name="android:activityCloseEnterAnimation">@anim/fade_in</item>
+        <item name="android:activityCloseExitAnimation">@anim/fade_out</item>
+    </style>
+
+    <style name="Widget.CH.EditText" parent="Widget.AppCompat.EditText">
+        <item name="android:fontFamily">@font/inter_regular</item>
+    </style>
+
+    <!-- Typography scale (Inter) -->
+    <style name="TextAppearance.CH.DisplaySmall" parent="TextAppearance.Material3.DisplaySmall">
+        <item name="fontFamily">@font/inter_bold</item>
+        <item name="android:fontFamily">@font/inter_bold</item>
+        <item name="android:letterSpacing">-0.02</item>
+    </style>
+    <style name="TextAppearance.CH.HeadlineLarge" parent="TextAppearance.Material3.HeadlineLarge">
+        <item name="fontFamily">@font/inter_bold</item>
+        <item name="android:fontFamily">@font/inter_bold</item>
+        <item name="android:letterSpacing">-0.02</item>
+    </style>
+    <style name="TextAppearance.CH.HeadlineMedium" parent="TextAppearance.Material3.HeadlineMedium">
+        <item name="fontFamily">@font/inter_bold</item>
+        <item name="android:fontFamily">@font/inter_bold</item>
+        <item name="android:letterSpacing">-0.015</item>
+    </style>
+    <style name="TextAppearance.CH.HeadlineSmall" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="fontFamily">@font/inter_bold</item>
+        <item name="android:fontFamily">@font/inter_bold</item>
+        <item name="android:letterSpacing">-0.01</item>
+    </style>
+    <style name="TextAppearance.CH.TitleLarge" parent="TextAppearance.Material3.TitleLarge">
+        <item name="fontFamily">@font/inter_semibold</item>
+        <item name="android:fontFamily">@font/inter_semibold</item>
+    </style>
+    <style name="TextAppearance.CH.TitleMedium" parent="TextAppearance.Material3.TitleMedium">
+        <item name="fontFamily">@font/inter_semibold</item>
+        <item name="android:fontFamily">@font/inter_semibold</item>
+    </style>
+    <style name="TextAppearance.CH.TitleSmall" parent="TextAppearance.Material3.TitleSmall">
+        <item name="fontFamily">@font/inter_semibold</item>
+        <item name="android:fontFamily">@font/inter_semibold</item>
+    </style>
+    <style name="TextAppearance.CH.BodyLarge" parent="TextAppearance.Material3.BodyLarge">
+        <item name="fontFamily">@font/inter_regular</item>
+        <item name="android:fontFamily">@font/inter_regular</item>
+    </style>
+    <style name="TextAppearance.CH.BodyMedium" parent="TextAppearance.Material3.BodyMedium">
+        <item name="fontFamily">@font/inter_regular</item>
+        <item name="android:fontFamily">@font/inter_regular</item>
+    </style>
+    <style name="TextAppearance.CH.BodySmall" parent="TextAppearance.Material3.BodySmall">
+        <item name="fontFamily">@font/inter_regular</item>
+        <item name="android:fontFamily">@font/inter_regular</item>
+    </style>
+    <style name="TextAppearance.CH.LabelLarge" parent="TextAppearance.Material3.LabelLarge">
+        <item name="fontFamily">@font/inter_semibold</item>
+        <item name="android:fontFamily">@font/inter_semibold</item>
+    </style>
+    <style name="TextAppearance.CH.LabelMedium" parent="TextAppearance.Material3.LabelMedium">
+        <item name="fontFamily">@font/inter_medium</item>
+        <item name="android:fontFamily">@font/inter_medium</item>
+    </style>
+    <style name="TextAppearance.CH.LabelSmall" parent="TextAppearance.Material3.LabelSmall">
+        <item name="fontFamily">@font/inter_medium</item>
+        <item name="android:fontFamily">@font/inter_medium</item>
+    </style>
+    <style name="TextAppearance.CH.Stat" parent="TextAppearance.CH.HeadlineSmall">
         <item name="android:textColor">?attr/colorOnSurface</item>
     </style>
+    <style name="TextAppearance.CH.SectionHeader" parent="TextAppearance.CH.TitleMedium">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+    <style name="TextAppearance.CH.Badge" parent="TextAppearance.CH.LabelSmall">
+        <item name="fontFamily">@font/inter_semibold</item>
+        <item name="android:fontFamily">@font/inter_semibold</item>
+        <item name="android:letterSpacing">0.02</item>
+    </style>
+    <!-- Kept for older layouts. -->
+    <style name="TextAppearance.BlogSpace.SectionHeader" parent="TextAppearance.CH.SectionHeader" />
 
-    <style name="TextAppearance.BlogSpace.Stat" parent="TextAppearance.Material3.HeadlineMedium">
-        <item name="android:textStyle">bold</item>
+    <!-- Shapes -->
+    <style name="ShapeAppearance.CH.Small" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
+    <style name="ShapeAppearance.CH.Medium" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+    <style name="ShapeAppearance.CH.Large" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">20dp</item>
+    </style>
+    <style name="ShapeAppearance.CH.ExtraLarge" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">28dp</item>
+    </style>
+    <style name="ShapeAppearance.CH.Circle" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+    <style name="ShapeAppearance.CH.Thumb" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+
+    <!-- Components -->
+    <style name="Widget.CH.Card" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardBackgroundColor">@color/bs_surface_container_lowest</item>
+        <item name="cardCornerRadius">@dimen/card_radius</item>
+        <item name="cardElevation">@dimen/card_elevation</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="strokeColor">@color/bs_outline_variant</item>
+        <item name="android:stateListAnimator">@animator/card_press</item>
+    </style>
+    <style name="Widget.CH.Card.Flat" parent="Widget.CH.Card">
+        <item name="cardElevation">0dp</item>
+        <item name="cardBackgroundColor">@color/bs_surface_container</item>
+        <item name="strokeWidth">0dp</item>
+    </style>
+    <style name="Widget.CH.Button" parent="Widget.Material3.Button">
+        <item name="android:minHeight">52dp</item>
+        <item name="cornerRadius">16dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.CH.LabelLarge</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+    </style>
+    <style name="Widget.CH.Button.Tonal" parent="Widget.Material3.Button.TonalButton">
+        <item name="android:minHeight">52dp</item>
+        <item name="cornerRadius">16dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.CH.LabelLarge</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+    </style>
+    <style name="Widget.CH.Button.Outlined" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:minHeight">52dp</item>
+        <item name="cornerRadius">16dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.CH.LabelLarge</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+    </style>
+    <style name="Widget.CH.Button.Text" parent="Widget.Material3.Button.TextButton">
+        <item name="android:textAppearance">@style/TextAppearance.CH.LabelLarge</item>
+    </style>
+    <!-- White button used on gradient backgrounds -->
+    <style name="Widget.CH.Button.OnGradient" parent="Widget.CH.Button">
+        <item name="backgroundTint">@android:color/white</item>
+        <item name="android:textColor">@color/brand_indigo</item>
+        <item name="iconTint">@color/brand_indigo</item>
+    </style>
+    <!-- Square icon + label buttons in the post action bar -->
+    <style name="Widget.CH.Button.Action" parent="Widget.Material3.Button.TextButton">
+        <item name="android:minHeight">64dp</item>
+        <item name="cornerRadius">16dp</item>
+        <item name="iconGravity">top</item>
+        <item name="iconPadding">4dp</item>
+        <item name="iconSize">22dp</item>
+        <item name="android:paddingStart">4dp</item>
+        <item name="android:paddingEnd">4dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.CH.LabelMedium</item>
+    </style>
+    <style name="Widget.CH.Chip.Filter" parent="Widget.Material3.Chip.Filter">
+        <item name="chipCornerRadius">12dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.CH.LabelLarge</item>
+        <item name="chipMinHeight">40dp</item>
+    </style>
+    <style name="Widget.CH.BottomNavigation" parent="Widget.Material3.BottomNavigationView">
+        <item name="backgroundTint">@color/bs_surface_container_lowest</item>
+        <item name="itemActiveIndicatorStyle">@style/Widget.CH.NavIndicator</item>
+        <item name="itemTextAppearanceActive">@style/TextAppearance.CH.LabelMedium</item>
+        <item name="itemTextAppearanceInactive">@style/TextAppearance.CH.LabelMedium</item>
+        <item name="elevation">8dp</item>
+    </style>
+    <style name="Widget.CH.NavIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/bs_primary_container</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.CH.Medium</item>
+    </style>
+    <style name="Widget.CH.ExtendedFab" parent="Widget.Material3.ExtendedFloatingActionButton.Icon.Primary">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.CH.Large</item>
+        <item name="android:textAppearance">@style/TextAppearance.CH.LabelLarge</item>
+    </style>
+    <style name="Widget.CH.Snackbar" parent="Widget.Material3.Snackbar">
+        <item name="shapeAppearance">@style/ShapeAppearance.CH.Medium</item>
+    </style>
+    <style name="Widget.CH.TextInput" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxCornerRadiusTopStart">16dp</item>
+        <item name="boxCornerRadiusTopEnd">16dp</item>
+        <item name="boxCornerRadiusBottomStart">16dp</item>
+        <item name="boxCornerRadiusBottomEnd">16dp</item>
+    </style>
+    <style name="Widget.CH.Toolbar" parent="Widget.Material3.Toolbar.Surface">
+        <item name="titleTextAppearance">@style/TextAppearance.CH.TitleLarge</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+    <!-- Kept for older layouts. -->
+
+    <style name="ThemeOverlay.CH.Dialog" parent="ThemeOverlay.Material3.MaterialAlertDialog.Centered">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.CH.ExtraLarge</item>
+        <item name="colorSurface">@color/bs_surface_container_lowest</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/CH.DialogTitle</item>
+    </style>
+    <style name="CH.DialogTitle" parent="MaterialAlertDialog.Material3.Title.Text.CenterStacked">
+        <item name="android:textAppearance">@style/TextAppearance.CH.TitleLarge</item>
+    </style>
+    <style name="ThemeOverlay.CH.BottomSheet" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Widget.CH.BottomSheet</item>
+    </style>
+    <style name="Widget.CH.BottomSheet" parent="Widget.Material3.BottomSheet.Modal">
+        <item name="shapeAppearance">@style/ShapeAppearance.CH.ExtraLarge</item>
+        <item name="backgroundTint">@color/bs_surface_container_lowest</item>
+    </style>
+
+    <!-- Profile statistic columns -->
+    <style name="CH.ProfileStat" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+    <style name="CH.ProfileStatValue" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:text">0</item>
+        <item name="android:textAppearance">@style/TextAppearance.CH.HeadlineSmall</item>
         <item name="android:textColor">?attr/colorPrimary</item>
+    </style>
+    <style name="CH.ProfileStatLabel" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">@style/TextAppearance.CH.LabelSmall</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
     </style>
 </resources>

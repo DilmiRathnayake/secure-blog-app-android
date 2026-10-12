@@ -156,6 +156,74 @@ public class PostRepositoryTest {
     }
 
     @Test
+    public void draftsAndStatusFilters() throws InterruptedException {
+        Post offline = insert("Offline post", "saved");
+        Thread.sleep(5);
+        Post uploaded = insert("Uploaded post", "online");
+        repo.markPublished(uploaded.getId(), "1", "https://example.blogspot.com/u.html");
+        Thread.sleep(5);
+        Post draft = new Post("", "half an idea", null);
+        draft.setDraft(true);
+        repo.insert(draft);
+
+        assertEquals(1, repo.getAll(PostFilter.DRAFT).size());
+        assertTrue(repo.getAll(PostFilter.DRAFT).get(0).isDraft());
+        assertEquals(Post.Status.DRAFT, repo.getById(draft.getId()).getStatus());
+        assertEquals(offline.getId(), repo.getAll(PostFilter.OFFLINE).get(0).getId());
+        assertEquals(uploaded.getId(), repo.getAll(PostFilter.UPLOADED).get(0).getId());
+        assertEquals(draft.getId(), repo.getAll(PostFilter.NEWEST).get(0).getId());
+        assertEquals(offline.getId(), repo.getAll(PostFilter.OLDEST).get(0).getId());
+        // Upload queue = finished, not-yet-uploaded posts only (drafts excluded).
+        assertEquals(1, repo.getUploadQueue().size());
+        assertEquals(offline.getId(), repo.getUploadQueue().get(0).getId());
+
+        PostRepository.Stats stats = repo.getStats();
+        assertEquals(3, stats.total);
+        assertEquals(1, stats.offline);
+        assertEquals(1, stats.published);
+        assertEquals(1, stats.drafts);
+
+        // Finishing a draft turns it into a normal offline post with the same id.
+        Post loaded = repo.getById(draft.getId());
+        loaded.setTitle("Finished");
+        loaded.setDraft(false);
+        assertTrue(repo.update(loaded));
+        assertEquals(0, repo.getAll(PostFilter.DRAFT).size());
+        assertEquals(2, repo.getUploadQueue().size());
+    }
+
+    @Test
+    public void upgradeFromVersion1KeepsExistingPosts() {
+        repo.close();
+        context.deleteDatabase(TEST_DB);
+        // Build a database exactly as version 1 of the app created it.
+        android.database.sqlite.SQLiteDatabase v1 = context.openOrCreateDatabase(TEST_DB, Context.MODE_PRIVATE, null);
+        v1.execSQL("CREATE TABLE posts (_id INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT NOT NULL, "
+                + "content TEXT NOT NULL, image_file TEXT, created_at INTEGER NOT NULL, updated_at INTEGER NOT NULL, "
+                + "remote_post_id TEXT, remote_url TEXT, published_at INTEGER NOT NULL DEFAULT 0)");
+        v1.execSQL("INSERT INTO posts (title, content, created_at, updated_at) VALUES ('Old post', 'from v1', 1, 1)");
+        v1.setVersion(1);
+        v1.close();
+
+        // Opening with the current helper runs onUpgrade(1 -> 2).
+        repo = PostRepository.createForTesting(context, TEST_DB);
+        List<Post> all = repo.getAll();
+        assertEquals(1, all.size());
+        assertEquals("Old post", all.get(0).getTitle());
+        assertFalse(all.get(0).isDraft());
+        assertEquals(1, repo.getUploadQueue().size());
+    }
+
+    @Test
+    public void removeImageDetachesPhoto() {
+        Post p = new Post("With photo", "text", "img_missing_file.jpg");
+        repo.insert(p);
+        assertTrue(repo.removeImage(p.getId()));
+        assertFalse(repo.getById(p.getId()).hasImage());
+        assertEquals(0, repo.getWithImages().size());
+    }
+
+    @Test
     public void dataSurvivesReopeningDatabase() {
         Post p = insert("Persistent", "Still here after restart");
         repo.close();

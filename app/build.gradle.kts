@@ -42,6 +42,7 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.core)
     implementation(libs.exifinterface)
+    implementation(libs.viewpager2)
     // Google sign-in/authorisation, used only for publishing to Blogger.
     implementation(libs.play.services.auth)
 

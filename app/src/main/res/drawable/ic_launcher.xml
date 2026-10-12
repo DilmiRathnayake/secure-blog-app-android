@@ -3,7 +3,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="oval">
-            <solid android:color="@color/bs_launcher_background" />
+            <gradient android:angle="135" android:endColor="@color/brand_purple" android:startColor="@color/brand_indigo" />
             <size android:width="108dp" android:height="108dp" />
         </shape>
     </item>

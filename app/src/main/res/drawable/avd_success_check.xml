@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Success animation: green circle pops in, then the tick draws itself. -->
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt">
+    <aapt:attr name="android:drawable">
+        <vector android:width="96dp" android:height="96dp" android:viewportWidth="96" android:viewportHeight="96">
+            <group android:name="circle_group" android:pivotX="48" android:pivotY="48" android:scaleX="0" android:scaleY="0">
+                <path android:fillColor="@color/status_success" android:pathData="M48,4a44,44 0,1 1,0 88a44,44 0,1 1,0 -88z" />
+            </group>
+            <path
+                android:name="tick"
+                android:pathData="M28,49 L42,63 L69,35"
+                android:strokeColor="#FFFFFF"
+                android:strokeLineCap="round"
+                android:strokeLineJoin="round"
+                android:strokeWidth="8"
+                android:trimPathEnd="0" />
+        </vector>
+    </aapt:attr>
+    <target android:name="circle_group">
+        <aapt:attr name="android:animation">
+            <set>
+                <objectAnimator android:duration="320" android:interpolator="@android:interpolator/overshoot" android:propertyName="scaleX" android:valueFrom="0" android:valueTo="1" />
+                <objectAnimator android:duration="320" android:interpolator="@android:interpolator/overshoot" android:propertyName="scaleY" android:valueFrom="0" android:valueTo="1" />
+            </set>
+        </aapt:attr>
+    </target>
+    <target android:name="tick">
+        <aapt:attr name="android:animation">
+            <objectAnimator android:duration="360" android:interpolator="@android:interpolator/fast_out_slow_in" android:propertyName="trimPathEnd" android:startOffset="260" android:valueFrom="0" android:valueTo="1" />
+        </aapt:attr>
+    </target>
+</animated-vector>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Gradient header with rounded bottom corners. -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <gradient android:angle="135" android:centerColor="@color/gradient_mid"
+                android:endColor="@color/gradient_end" android:startColor="@color/gradient_start" />
+            <corners android:bottomLeftRadius="32dp" android:bottomRightRadius="32dp" />
+        </shape>
+    </item>
+    <!-- Soft decorative glow circles -->
+    <item android:gravity="top|end" android:width="220dp" android:height="220dp" android:top="-80dp" android:right="-60dp">
+        <shape android:shape="oval"><solid android:color="#1FFFFFFF" /></shape>
+    </item>
+    <item android:gravity="bottom|start" android:width="140dp" android:height="140dp" android:bottom="-50dp" android:left="-40dp">
+        <shape android:shape="oval"><solid android:color="#14FFFFFF" /></shape>
+    </item>
+</layer-list>
