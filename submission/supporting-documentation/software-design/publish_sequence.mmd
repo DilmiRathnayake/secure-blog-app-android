@@ -1,0 +1,27 @@
+sequenceDiagram
+    actor User
+    participant UI as PostDetail / Posts
+    participant PC as PublishController
+    participant GA as GoogleAuthHelper
+    participant GPS as Google Play services
+    participant API as Blogger API v3
+    participant DB as PostRepository (SQLite)
+    User->>UI: Publish
+    UI->>PC: publish(ids)
+    PC->>PC: check blog chosen + online, confirm dialog
+    PC->>GA: requestToken()
+    GA->>GPS: authorize(scope blogger)
+    GPS-->>User: account / consent (first time only)
+    GPS-->>GA: access token
+    loop each selected post (background thread)
+        PC->>API: POST /blogs/{id}/posts (Bearer token)
+        alt 2xx
+            API-->>PC: {id, url}
+            PC->>DB: markPublished(id, remoteId, url)
+        else 401
+            PC->>GA: invalidate + get new token, retry once
+        else 4xx/5xx or IOException
+            PC->>PC: record friendly error (no DB change)
+        end
+    end
+    PC-->>User: result list with URLs / errors

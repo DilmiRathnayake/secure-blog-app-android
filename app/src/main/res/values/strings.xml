@@ -37,12 +37,13 @@
 
     <!-- Delete -->
     <string name="delete_one_title">Delete this post?</string>
-    <string name="delete_one_message">“%1$s” and its photo will be permanently removed from this device. This cannot be undone.</string>
+    <string name="delete_one_message">“%1$s” will be permanently removed from this device. This cannot be undone.</string>
+    <string name="delete_one_message_photo">“%1$s” and its photo will be permanently removed from this device. This cannot be undone.</string>
     <plurals name="delete_many_title">
         <item quantity="one">Delete %d post?</item>
         <item quantity="other">Delete %d posts?</item>
     </plurals>
-    <string name="delete_many_message">The selected posts and their photos will be permanently removed from this device. This cannot be undone.</string>
+    <string name="delete_many_message">The selected posts and any attached photos will be permanently removed from this device. This cannot be undone.</string>
     <string name="deleted_one">Post deleted</string>
     <plurals name="deleted_many">
         <item quantity="one">%d post deleted</item>

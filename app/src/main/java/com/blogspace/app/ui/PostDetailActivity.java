@@ -198,7 +198,7 @@ public class PostDetailActivity extends AppCompatActivity implements PublishCont
         new MaterialAlertDialogBuilder(this)
                 .setIcon(R.drawable.ic_delete)
                 .setTitle(R.string.delete_one_title)
-                .setMessage(getString(R.string.delete_one_message, post.getTitle()))
+                .setMessage(getString(post.hasImage() ? R.string.delete_one_message_photo : R.string.delete_one_message, post.getTitle()))
                 .setPositiveButton(R.string.action_delete, (d, w) -> delete())
                 .setNegativeButton(R.string.action_cancel, null)
                 .show();

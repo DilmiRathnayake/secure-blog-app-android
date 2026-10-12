@@ -1,0 +1,24 @@
+flowchart LR
+    U((User))
+    subgraph Offline [On the device - works offline]
+        direction TB
+        A1([Create / edit post])
+        A2([View post and list])
+        A3([Search posts])
+        A4([Delete one or selected posts])
+        A5([Attach photo: gallery / camera])
+        A6([Save draft, filter by status])
+    end
+    subgraph Online [Needs another app or internet]
+        direction TB
+        B1([Share post: email or app])
+        B2([Connect Blogger account])
+        B3([Upload one or many posts])
+    end
+    E[[Email / other apps]]
+    G[(Google sign-in + Blogger API)]
+    U --- A1 & A2 & A3 & A4 & A5 & A6
+    U --- B1 & B2 & B3
+    B1 --- E
+    B2 --- G
+    B3 --- G

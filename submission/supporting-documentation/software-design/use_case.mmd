@@ -1,0 +1,24 @@
+flowchart LR
+    U((Blogger<br/>user))
+    G[(Google /<br/>Blogger API)]
+    E[[Email / other app]]
+    subgraph ConnectHub app
+        UC1([Create post])
+        UC2([Edit post])
+        UC3([View post / list])
+        UC4([Delete post])
+        UC5([Select & delete many])
+        UC6([Search posts])
+        UC7([Attach photo:<br/>gallery or camera])
+        UC8([Share post])
+        UC9([Publish one / many])
+        UC10([Connect Blogger account])
+        UC11([Save draft / filter by status])
+        UC12([Browse photo gallery])
+    end
+    U --- UC1 & UC2 & UC3 & UC4 & UC5 & UC6 & UC8 & UC9 & UC10 & UC11 & UC12
+    UC1 -. includes .-> UC7
+    UC2 -. includes .-> UC7
+    UC8 --- E
+    UC9 --- G
+    UC10 --- G

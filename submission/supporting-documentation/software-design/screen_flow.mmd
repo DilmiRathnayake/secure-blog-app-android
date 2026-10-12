@@ -1,0 +1,27 @@
+flowchart TD
+    Start([Launch]) --> Splash[Splash]
+    Splash -->|first run| Onb[Onboarding x3] --> Prof[Profile setup]
+    Splash --> Main
+    Prof --> Main
+    subgraph Main [MainActivity - bottom navigation]
+        Home[Home dashboard]
+        Posts[Posts + filter chips]
+        Upload[Upload queue]
+        Gallery[Gallery grid]
+        Profile[Profile & settings]
+    end
+    Home & Posts -->|search bar| Search[SearchActivity]
+    Home & Posts -->|FAB| Edit[EditPostActivity]
+    Home & Posts & Search -->|tap card| Detail[PostDetailActivity]
+    Posts -->|swipe right| Edit
+    Posts -->|swipe left| Undo{{Deleted - Undo?}}
+    Posts -->|long-press| Sel[Selection bar: select all, upload, delete]
+    Gallery -->|Camera / Gallery card| Edit
+    Gallery -->|tap photo| Preview[ImagePreviewActivity]
+    Detail -->|Edit| Edit
+    Detail -->|Share| Sheet[ShareSheet]
+    Detail & Upload & Sel -->|Upload| PubFlow[[PublishController + upload sheet]]
+    Upload & Profile -->|Settings| PubSet[PublishSettingsActivity]
+    Profile --> About[AboutActivity]
+    Edit -->|Camera| Cam[Camera app via FileProvider]
+    Edit -->|Gallery| Picker[System Photo Picker]

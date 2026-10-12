@@ -1,0 +1,13 @@
+erDiagram
+    POSTS {
+        INTEGER _id PK "AUTOINCREMENT"
+        TEXT title "NOT NULL"
+        TEXT content "NOT NULL"
+        TEXT image_file "NULL - file name in filesDir/images"
+        INTEGER created_at "NOT NULL, epoch ms"
+        INTEGER updated_at "NOT NULL, epoch ms, indexed DESC"
+        TEXT remote_post_id "NULL - Blogger id after confirmed publish"
+        TEXT remote_url "NULL"
+        INTEGER published_at "NOT NULL DEFAULT 0"
+        INTEGER is_draft "NOT NULL DEFAULT 0 (added in v2)"
+    }

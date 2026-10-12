@@ -1,0 +1,113 @@
+classDiagram
+    direction LR
+    class Post {
+        -long id
+        -String title
+        -String content
+        -String imageFileName
+        -long createdAt
+        -long updatedAt
+        -String remotePostId
+        -String remoteUrl
+        -long publishedAt
+        -boolean draft
+        +getStatus() Status
+        +hasImage() boolean
+        +isPublished() boolean
+    }
+    class BlogDbHelper {
+        +onCreate(db)
+        +onUpgrade(db, old, new)
+    }
+    class PostRepository {
+        +insert(Post) long
+        +update(Post) boolean
+        +getById(long) Post
+        +getAll(PostFilter) List~Post~
+        +getUploadQueue() List~Post~
+        +getWithImages() List~Post~
+        +removeImage(long) boolean
+        +search(String) List~Post~
+        +delete(long) boolean
+        +deleteMany(ids) int
+        +markPublished(id, remoteId, url)
+        +getStats() Stats
+    }
+    class PostValidator { +validateTitle() +validateContent() }
+    class SearchQuery { +normalise() +toContainsPattern() }
+    class ImageStorage {
+        +importImage(ctx, Uri) String
+        +createCameraTempFile(ctx) File
+        +getShareUri(File) Uri
+        +decodeSampled() Bitmap
+    }
+    class ShareHelper { +shareWithChooser() +shareByEmail() }
+    class PublishController { +publish(List~Long~) }
+    class PublishService {
+        <<interface>>
+        +publish(Post) PublishResult
+    }
+    class BloggerPublishService
+    class MockPublishService
+    class BloggerApi { +listMyBlogs(token) +createPost(token, blogId, title, html, imageOmitted) }
+    class GoogleAuthHelper { +requestToken() +getToken() +invalidate() }
+    class TokenProvider {
+        <<interface>>
+        +getToken() String
+        +invalidate(token)
+    }
+    class PublishSettings
+
+    class PostFilter {
+        <<enumeration>>
+        NEWEST
+        OLDEST
+        UPLOADED
+        OFFLINE
+        DRAFT
+    }
+    class MainActivity
+    class HomeFragment
+    class PostsFragment
+    class UploadFragment
+    class GalleryFragment
+    class ProfileFragment
+    class SearchActivity
+    class ShareSheet
+    class PostDetailActivity
+    class EditPostActivity
+    class PostAdapter
+
+    PostRepository --> BlogDbHelper
+    PostRepository --> Post
+    PostRepository ..> SearchQuery
+    PostRepository ..> ImageStorage : deletes photos
+    MainActivity *-- PublishController
+    MainActivity o-- HomeFragment
+    MainActivity o-- PostsFragment
+    MainActivity o-- UploadFragment
+    MainActivity o-- GalleryFragment
+    MainActivity o-- ProfileFragment
+    PostsFragment --> PostAdapter
+    UploadFragment --> PostAdapter
+    SearchActivity --> PostAdapter
+    PostsFragment ..> PostFilter
+    UploadFragment ..> PublishController
+    GalleryFragment ..> PostRepository
+    PostDetailActivity ..> ShareSheet
+    ShareSheet ..> ShareHelper
+    HomeFragment --> PostAdapter
+    PostsFragment ..> PostRepository
+    SearchActivity ..> PostRepository
+    EditPostActivity ..> PostRepository
+    EditPostActivity ..> PostValidator
+    EditPostActivity ..> ImageStorage
+    PostDetailActivity *-- PublishController
+    PublishController ..> PublishService
+    PublishService <|.. BloggerPublishService
+    PublishService <|.. MockPublishService
+    BloggerPublishService --> BloggerApi
+    BloggerPublishService --> TokenProvider
+    TokenProvider <|.. GoogleAuthHelper
+    PublishController --> GoogleAuthHelper
+    PublishController ..> PublishSettings

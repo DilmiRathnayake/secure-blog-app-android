@@ -1,0 +1,73 @@
+classDiagram
+    direction LR
+    class Post {
+        -long id
+        -String title
+        -String content
+        -String imageFileName
+        -long createdAt
+        -long updatedAt
+        -long publishedAt
+        -boolean draft
+        +getStatus() Status
+    }
+    class BlogDbHelper {
+        +onCreate(db)
+        +onUpgrade(db, oldV, newV)
+    }
+    class PostRepository {
+        +insert(Post) long
+        +update(Post) boolean
+        +getById(long) Post
+        +getAll(PostFilter) List~Post~
+        +search(String) List~Post~
+        +delete(long) boolean
+        +deleteMany(ids) int
+        +markPublished(id, remoteId, url)
+    }
+    class ImageStorage {
+        +importImage(ctx, Uri) String
+        +createCameraTempFile(ctx) File
+        +getShareUri(File) Uri
+    }
+    class ShareHelper {
+        +shareWithChooser(activity, post)
+        +shareByEmail(activity, post)
+    }
+    class PublishController {
+        +publish(List~Long~ ids)
+    }
+    class PublishService {
+        <<interface>>
+        +publish(Post) PublishResult
+    }
+    class BloggerPublishService
+    class MockPublishService
+    class BloggerApi {
+        +listMyBlogs(token)
+        +createPost(token, blogId, title, html, imageOmitted)
+    }
+    class GoogleAuthHelper {
+        +requestToken(activity, callback)
+        +getToken() String
+    }
+    class EditPostActivity
+    class PostDetailActivity
+    class PostsFragment
+    class PostAdapter
+
+    PostRepository --> BlogDbHelper
+    PostRepository ..> Post
+    PostRepository ..> ImageStorage
+    EditPostActivity ..> PostRepository
+    EditPostActivity ..> ImageStorage
+    PostsFragment --> PostAdapter
+    PostsFragment ..> PostRepository
+    PostDetailActivity ..> ShareHelper
+    PostDetailActivity *-- PublishController
+    PublishController ..> PublishService
+    PublishService <|.. BloggerPublishService
+    PublishService <|.. MockPublishService
+    BloggerPublishService --> BloggerApi
+    BloggerPublishService --> GoogleAuthHelper
+    PublishController ..> PostRepository
