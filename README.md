@@ -6,8 +6,10 @@ Android share intents and publishing to **Blogger**.
 
 | Home | Posts | Editor | Upload | Dark mode |
 |---|---|---|---|---|
-| <img width="738" height="1600" alt="E01_home_airplane_mode" src="https://github.com/user-attachments/assets/13577a33-c9c1-4cf9-932d-238c64297b70" /> <img width="738" height="1600" alt="E03_create_post_gallery_png" src="https://github.com/user-attachments/assets/29c7ac39-9bb2-43db-b288-65933efa6ce6" /> <img width="738" height="1600" alt="E14b_upload_confirms" src="https://github.com/user-attachments/assets/e788a7bc-ffb9-4772-b236-1c29039f4237" />
-<img width="738" height="1600" alt="E06a_edit_prefilled" src="https://github.com/user-attachments/assets/79743233-52c6-428b-aeeb-449b0ad52eb2" /> <img width="738" height="1600" alt="E10_persistence_after_restart with dark mode" src="https://github.com/user-attachments/assets/6df2b341-32d4-4ce0-af78-ef5886dbfdc6" />
+|<img width="738" height="1600" alt="E01_home_airplane_mode" src="https://github.com/user-attachments/assets/13577a33-c9c1-4cf9-932d-238c64297b70" /> <img width="738" height="1600" alt="E03_create_post_gallery_png" src="https://github.com/user-attachments/assets/29c7ac39-9bb2-43db-b288-65933efa6ce6" />|
+|<img width="738" height="1600" alt="E14b_upload_confirms" src="https://github.com/user-attachments/assets/e788a7bc-ffb9-4772-b236-1c29039f4237" />|
+|<img width="738" height="1600" alt="E06a_edit_prefilled" src="https://github.com/user-attachments/assets/79743233-52c6-428b-aeeb-449b0ad52eb2" />|
+|<img width="738" height="1600" alt="E10_persistence_after_restart with dark mode" src="https://github.com/user-attachments/assets/6df2b341-32d4-4ce0-af78-ef5886dbfdc6" />|
 
 
 All screenshots in `docs/screenshots/` were captured from the running app on an Android 16 (API 36) emulator.
